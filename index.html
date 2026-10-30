@@ -631,10 +631,10 @@ const EXAMPLES = window.L19_EXAMPLES, C = window.L19;
 const PAL = ["#3B5BDB", "#D9480F", "#0F8B8D", "#9C36B5", "#E8A317", "#2F9E44", "#C2255C", "#5C7CFA", "#845EF7", "#1098AD", "#F76707", "#66A80F"];
 const TABS = [
   { id: "home", label: "Start", grp: "", c: "#57524a", ic: "★" },
-  { id: "morph", label: "Matrix & concepts", grp: "Generate", c: "#3B5BDB", ic: "1" },
+  { id: "morph", label: "Morphological matrix", grp: "Generate", c: "#3B5BDB", ic: "1" },
   { id: "cbox", label: "C-box", grp: "Filter", c: "#C98A10", ic: "2" },
   { id: "weights", label: "Criteria & weights", grp: "Prepare", c: "#2F9E44", ic: "3" },
-  { id: "datum", label: "Datum method", grp: "Screen", c: "#0F8B8D", ic: "4" },
+  { id: "datum", label: "Datum method (Pugh)", grp: "Screen", c: "#0F8B8D", ic: "4" },
   { id: "pair", label: "Pairwise comparison", grp: "Screen", c: "#9C36B5", ic: "5" },
   { id: "score", label: "Weighted matrix", grp: "Score", c: "#D9480F", ic: "6" },
   { id: "funnel", label: "Funnel & report", grp: "Wrap up", c: "#1d1b18", ic: "7" }
@@ -764,9 +764,9 @@ function rerenderSoon() { clearTimeout(rTimer); rTimer = setTimeout(() => { rend
 
 /* ---------------- HOME ---------------- */
 function vHome() {
-  const methods = TABS.slice(1).map(t => `<button class="mc" style="--c:${t.c}" data-act="tab" data-id="${t.id}"><b>${t.ic}. ${t.label}</b><span>${({ morph: "Sub-functions, ideas, combine into concepts", cbox: "Quick 2×2 filter of a big pool", weights: "Criteria + weights (direct, matrix, tree)", datum: "Screen against a benchmark with + 0 −", pair: "Head-to-head, criterion by criterion", score: "Ratings × weights = overall value", funnel: "See the whole funnel; download a report" })[t.id]}</span></button>`).join("");
+  const methods = TABS.slice(1).map(t => `<button class="mc" style="--c:${t.c}" data-act="tab" data-id="${t.id}"><b>${t.ic}. ${t.label}</b><span>${({ morph: "Sub-functions → ideas → combine into concepts", cbox: "Quick 2×2 filter of a big pool", weights: "Criteria + weights (direct, matrix method, objectives tree)", datum: "Pugh's selection matrix: screen against a benchmark with + 0 −", pair: "Head-to-head, criterion by criterion", score: "Ratings × weights = overall value", funnel: "See the whole funnel; download a report" })[t.id]}</span></button>`).join("");
   const card = e => {
-    const tags = [e.subfunctions.length && "Matrix", e.cbox && e.concepts.some(c => c.pos) && "C-box", e.weighting && e.weighting.method === "matrix" && "Weights", e.screening && "Datum", e.pairwise && "Pairwise", e.scoring && "Scoring"].filter(Boolean);
+    const tags = [e.subfunctions.length && "Morphological matrix", e.cbox && e.concepts.some(c => c.pos) && "C-box", e.weighting && e.weighting.method === "matrix" && "Weights", e.screening && "Datum (Pugh)", e.pairwise && "Pairwise", e.scoring && "Weighted matrix"].filter(Boolean);
     return `<button class="ex ${UI.exId === e.id ? "cur" : ""}" data-act="loadex" data-id="${e.id}"><span class="tg">${esc(e.tag)}</span><h4>${esc(e.name)}</h4><span class="mut small">${esc(e.blurb)}</span><span class="mt">${tags.map(t => `<span>${t}</span>`).join("")}</span></button>`;
   };
   const exs = EXAMPLES.filter(e => e.group !== "more").map(card).join("");
@@ -807,7 +807,7 @@ function vMorph() {
   ], "Tip: concepts made here flow automatically into the C-box, datum method, pairwise and weighted matrix.");
   h += `<div class="card" style="margin-bottom:14px"><h3>Overall function</h3><input class="inp big" data-bind="overall" data-fid="overall" value="${esc(P.overall)}" placeholder="e.g. Carry food and keep it hot until lunch"></div>`;
   h += `<div class="grid" style="align-items:start">`;
-  h += `<div class="card"><div class="row" style="justify-content:space-between;margin-bottom:12px"><h3 style="margin:0">Matrix</h3>
+  h += `<div class="card"><div class="row" style="justify-content:space-between;margin-bottom:12px"><h3 style="margin:0">Morphological matrix</h3>
       <div class="seg"><button class="${!build ? "on" : ""}" data-act="mode" data-id="edit">Edit matrix</button><button class="${build ? "on" : ""}" data-act="mode" data-id="build">Build concepts</button></div></div>`;
   if (build && P.concepts.length) h += `<div class="stick"><div class="cpick">${P.concepts.map(c => chip(c.id, UI.active === c.id, "buildc")).join("")}<button class="chip" data-act="addc"><b style="background:var(--ink)">+</b>New</button></div></div>`;
   if (build) {
@@ -975,7 +975,7 @@ function vWeights() {
   h += how("How to choose criteria and weights", [
     "Take criteria from the <b>list of needs</b>. Make them comprehensive and <b>independent</b> (no need written twice).",
     "Weight = importance. Weights should add up to <b>100 %</b>.",
-    "<b>Matrix method:</b> compare criteria two at a time, count wins, add 1, divide by the total.",
+    "<b>Matrix method:</b> compare criteria two at a time with +1 / 0 / −1 (just like pairwise comparison). Count the +1s in each row (a 0 counts ½), add 1 so no criterion gets zero, divide by the total.",
     "<b>Objectives tree:</b> weight groups, weight criteria inside each group, multiply down.",
     "<b>Demands</b> (must-haves) are pass/fail — leave them out of the weights. Reassess weights when new needs appear."
   ]);
@@ -989,7 +989,7 @@ function vWeights() {
   });
   h += `</div><div class="row" style="margin-top:12px"><button class="btn sm" data-act="addcrit">+ Add criterion</button>${Math.abs(tot - 100) > .01 && tot > 0 ? `<button class="btn sm acc" data-act="normw">Scale to 100 %</button>` : ""}</div></div>`;
   h += `<div class="card"><div class="row" style="justify-content:space-between;margin-bottom:12px"><h3 style="margin:0">Find weights with…</h3>
-    <div class="seg"><button class="${m === "direct" ? "on" : ""}" data-act="wmeth" data-id="direct">Direct</button><button class="${m === "matrix" ? "on" : ""}" data-act="wmeth" data-id="matrix">Matrix</button><button class="${m === "tree" ? "on" : ""}" data-act="wmeth" data-id="tree">Tree</button></div></div>`;
+    <div class="seg"><button class="${m === "direct" ? "on" : ""}" data-act="wmeth" data-id="direct">Direct</button><button class="${m === "matrix" ? "on" : ""}" data-act="wmeth" data-id="matrix">Matrix method</button><button class="${m === "tree" ? "on" : ""}" data-act="wmeth" data-id="tree">Objectives tree</button></div></div>`;
   if (m === "direct") h += `<p class="mut" style="margin:0">Type weights directly in the list. Use this when the team already agrees on the importance of each criterion.</p>`;
   if (m === "matrix") h += weightMatrix();
   if (m === "tree") h += weightTree();
@@ -999,7 +999,7 @@ function vWeights() {
 function weightMatrix() {
   const n = P.criteria.length, M = P.weighting.matrix, R = C.matrixWeights(n, M);
   if (n < 2) return `<p class="mut">Add at least two criteria.</p>`;
-  let h = `<p class="small mut" style="margin-top:0">For each pair: which criterion is <b>more important</b>?</p>`;
+  let h = `<p class="small mut" style="margin-top:0">For each pair, read <b>row vs column</b>: <b>+1</b> row is more important · <b>0</b> equal · <b>−1</b> less important — the same as pairwise comparison.</p>`;
   if (isM()) {
     h += `<div class="mlist">`;
     for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) {
@@ -1008,17 +1008,17 @@ function weightMatrix() {
     }
     h += `</div>`;
   } else {
-    h += `<div class="tblwrap"><table class="t"><thead><tr><th class="l">Row vs column</th>${P.criteria.map((c, j) => `<th title="${esc(c.name)}">${esc(short(c.name))}</th>`).join("")}<th class="tot">Wins</th><th class="tot">+1</th><th class="tot">Weight</th></tr></thead><tbody>`;
+    h += `<div class="tblwrap"><table class="t"><thead><tr><th class="l">Row vs column</th>${P.criteria.map((c, j) => `<th title="${esc(c.name)}">${esc(short(c.name))}</th>`).join("")}<th class="tot">Wins<span class="s">no. of +1</span></th><th class="tot">Points<span class="s">wins + 1</span></th><th class="tot">Weight</th></tr></thead><tbody>`;
     for (let i = 0; i < n; i++) {
       h += `<tr><td class="crit">${esc(P.criteria[i].name)}</td>`;
       for (let j = 0; j < n; j++) {
         if (i === j) { h += `<td class="diag">–</td>`; continue; }
-        if (j > i) { const v = M[i + "|" + j]; h += `<td class="${v === 1 ? "pos" : ""}"><select class="cell" data-act-change="wm" data-k="${i}|${j}" aria-label="Row vs column"><option value="" ${v === undefined ? "selected" : ""}>·</option><option value="1" ${v === 1 ? "selected" : ""}>1</option><option value="0.5" ${v === .5 ? "selected" : ""}>½</option><option value="0" ${v === 0 ? "selected" : ""}>0</option></select></td>`; }
-        else { const v = M[j + "|" + i]; h += `<td class="mirror">${v === undefined ? "·" : v === .5 ? "½" : 1 - v}</td>`; }
+        if (j > i) { const v = M[i + "|" + j]; h += `<td class="${v === 1 ? "pos" : v === 0 ? "neg" : ""}"><select class="cell" data-act-change="wm" data-k="${i}|${j}" aria-label="Row vs column"><option value="" ${v === undefined ? "selected" : ""}>·</option><option value="1" ${v === 1 ? "selected" : ""}>+1</option><option value="0.5" ${v === .5 ? "selected" : ""}>0</option><option value="0" ${v === 0 ? "selected" : ""}>−1</option></select></td>`; }
+        else { const v = M[j + "|" + i]; const sv = v === undefined ? null : v === .5 ? 0 : v === 1 ? -1 : 1; h += `<td class="mirror ${sv > 0 ? "pos" : sv < 0 ? "neg" : ""}">${sv === null ? "·" : C.signed(sv)}</td>`; }
       }
       h += `<td class="tot">${R.wins[i]}</td><td class="tot">${R.pts[i]}</td><td class="tot">${C.round(R.w[i], 1)} %</td></tr>`;
     }
-    h += `</tbody></table></div><p class="small mut">1 = row more important · ½ = equal · 0 = column more important. The lower half fills itself.</p>`;
+    h += `</tbody></table></div><p class="small mut">The lower half fills itself with the opposite value. Why not use the row total as the weight? It can be negative — a weight can't. So we count the +1s instead.</p>`;
   }
   if (isM()) h += `<div class="sumgrid" style="margin-top:10px">${P.criteria.map((c, i) => `<div class="sumcell"><div class="k">${esc(short(c.name))}</div><div class="v">${C.round(R.w[i], 1)}%</div></div>`).join("")}</div>`;
   const done = Object.keys(M).length >= n * (n - 1) / 2;
@@ -1051,8 +1051,8 @@ function vDatum() {
   if (s.datum && !cById(s.datum)) s.datum = null;
   s.include = s.include.filter(id => cById(id) && id !== s.datum);
   const rows = C.screening(P);
-  let h = head("Screen", "Datum <em>method</em>", expBtns("datum"));
-  h += how("How to use the datum method", [
+  let h = head("Screen · also called Pugh's selection matrix", "Datum <em>method</em>", expBtns("datum"));
+  h += how("How to use the datum method (Pugh's selection matrix)", [
     "Pick a <b>datum</b> (benchmark): an existing product or one of your concepts. It scores 0 everywhere.",
     "Compare every concept with the datum on each criterion: <b>better (+)</b>, <b>same (0)</b> or <b>worse (−)</b>. On the 5-level scale use ++ and −−.",
     "Totals: Σ+ (++ counts 2), Σ−, net = Σ+ − Σ−. Rank by net.",
@@ -1569,10 +1569,10 @@ const SHEETS = {
     s.table([["#", "Criterion", "Weight"]], P.criteria.map((c, i) => [String(i + 1), { t: c.name, al: "l", b: true }, { t: C.round(c.w, 1) + " %", mono: true }]).concat([[{ t: "Total", span: 2, b: true, bg: "#FFFBEA" }, { t: C.round(tot, 1) + " %", b: true, bg: "#FFFBEA" }]]), [0.4, 3, 1]);
     const m = P.weighting.method, n = P.criteria.length;
     if (m === "matrix" && n > 1) {
-      s.label("Matrix method — row more important than column? (1 yes · ½ equal · 0 no)");
+      s.label("Matrix method — row vs column: +1 more important · 0 equal · −1 less important");
       const R = C.matrixWeights(n, P.weighting.matrix), M = P.weighting.matrix;
-      const head = [["Row vs column"].concat(P.criteria.map(c => short(c.name)), ["Wins", "+1", "Weight"])];
-      const rows = P.criteria.map((c, i) => [{ t: c.name, al: "l", b: true, bg: "#FBF8F1" }].concat(P.criteria.map((d, j) => { if (i === j) return { t: "–", bg: SOFT }; const v = j > i ? M[i + "|" + j] : (M[j + "|" + i] === undefined ? undefined : 1 - M[j + "|" + i]); return { t: v === undefined ? "·" : v === .5 ? "½" : String(v), bg: v === 1 ? "#E3F4E6" : null }; }), [{ t: String(R.wins[i]), bg: "#FFF3C9" }, { t: String(R.pts[i]), bg: "#FFF3C9" }, { t: C.round(R.w[i], 1) + " %", b: true, bg: "#FFF3C9" }]));
+      const head = [["Row vs column"].concat(P.criteria.map(c => short(c.name)), ["Wins (no. of +1)", "Points (wins + 1)", "Weight"])];
+      const rows = P.criteria.map((c, i) => [{ t: c.name, al: "l", b: true, bg: "#FBF8F1" }].concat(P.criteria.map((d, j) => { if (i === j) return { t: "–", bg: SOFT }; const v = j > i ? M[i + "|" + j] : (M[j + "|" + i] === undefined ? undefined : 1 - M[j + "|" + i]); const sv = v === undefined ? null : v === .5 ? 0 : v === 1 ? 1 : -1; return { t: sv === null ? "·" : C.signed(sv), bg: sv > 0 ? "#E3F4E6" : sv < 0 ? "#FBE4E1" : null, b: sv !== 0 }; }), [{ t: String(R.wins[i]), bg: "#FFF3C9" }, { t: String(R.pts[i]), bg: "#FFF3C9" }, { t: C.round(R.w[i], 1) + " %", b: true, bg: "#FFF3C9" }]));
       s.table(head, rows, [2].concat(P.criteria.map(() => 1), [0.8, 0.6, 1]), { sz: 16 });
     }
     if (m === "tree") {
@@ -1583,7 +1583,7 @@ const SHEETS = {
     return s.finish();
   },
   async datum() {
-    const s = new Sheet("Screen", "Datum method (Pugh)", "#0F8B8D"); const sc = P.screening; const rows = C.screening(P);
+    const s = new Sheet("Screen", "Datum method (Pugh's selection matrix)", "#0F8B8D"); const sc = P.screening; const rows = C.screening(P);
     s.text(`Datum: ${sc.datum} · ${cname(sc.datum)}   ·   Scale: ${sc.scale === 5 ? "++ + 0 − −−" : "+ 0 −"}`, { sz: 19, col: MUT });
     const head = [["Criteria", "Datum " + sc.datum].concat(rows.map(r => r.id + (cname(r.id) !== r.id ? " · " + cname(r.id) : "")))];
     const body = P.criteria.map((c, i) => [{ t: c.name, al: "l", b: true, bg: "#FBF8F1" }, { t: "0", bg: "#EEF7F7", col: "#0F8B8D" }].concat(rows.map(r => sCell(r.r[i]))));
