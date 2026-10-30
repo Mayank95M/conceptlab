@@ -1,0 +1,1634 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Concept Lab — Lecture 19 practice tool</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1d1b18;--mut:#6b665d;--paper:#FBF8F1;--rule:#E4DDCF;--card:#fff;--soft:#F3EEE3;--acc:#D9480F;
+ --morph:#3B5BDB;--cbox:#C98A10;--wt:#2F9E44;--datum:#0F8B8D;--pair:#9C36B5;--score:#D9480F;--fun:#1d1b18;
+ --pos:#E3F4E6;--neg:#FBE4E1;--posT:#1F7A35;--negT:#B42318;--c:var(--acc)}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font-family:Inter,system-ui,sans-serif;color:var(--ink);background:var(--paper);font-size:15px;line-height:1.45}
+button,input,select,textarea{font:inherit;color:inherit}
+.app{display:grid;grid-template-columns:268px 1fr;min-height:100vh}
+aside{background:#1d1b18;color:#EDE6D8;padding:22px 16px;position:sticky;top:0;height:100vh;overflow:auto;display:flex;flex-direction:column;gap:6px}
+.brand{font-family:Fraunces;font-size:25px;font-weight:600;color:#fff;padding:0 8px 2px}
+.brand em{color:#FFB37A;font-style:italic;font-weight:500}
+.brandsub{font-size:12px;color:#A9A193;padding:0 8px 16px;letter-spacing:.04em}
+.navgrp{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#8d8577;padding:12px 10px 4px;font-weight:700}
+.nav{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;cursor:pointer;border:0;background:transparent;text-align:left;width:100%;color:#E6DECF;font-weight:500}
+.nav:hover{background:#2b2924}
+.nav.on{background:#FBF8F1;color:#1d1b18;font-weight:700}
+.nav i{width:24px;height:24px;border-radius:7px;flex:none;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:12px;font-weight:700;color:#fff;background:var(--c)}
+.nav .badge{margin-left:auto;font-size:11px;font-family:"JetBrains Mono",monospace;opacity:.7}
+.aside-foot{margin-top:auto;padding:14px 8px 0;border-top:1px solid #34312b;font-size:12px;color:#A9A193}
+.aside-foot input{width:100%;background:#2b2924;border:1px solid #403c35;border-radius:8px;padding:8px 10px;color:#fff;margin-top:6px}
+main{min-width:0}
+.top{display:flex;align-items:center;gap:10px;padding:14px 30px;border-bottom:1px solid var(--rule);background:rgba(251,248,241,.94);position:sticky;top:0;z-index:20;backdrop-filter:blur(6px);flex-wrap:wrap}
+.top .proj{font-weight:700;font-size:15px;display:flex;align-items:center;gap:8px;min-width:0}
+.top .proj input{border:1px solid transparent;background:transparent;border-radius:8px;padding:5px 8px;font-weight:700;min-width:140px;max-width:340px}
+.top .proj input:hover,.top .proj input:focus{border-color:var(--rule);background:#fff;outline:none}
+.sp{flex:1}
+.btn{border:1px solid var(--rule);background:#fff;color:var(--ink);border-radius:9px;padding:7px 12px;cursor:pointer;font-weight:600;font-size:13.5px;display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+.btn:hover{border-color:#cfc5b2;background:#FFFDF8}
+.btn.pri{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn.pri:hover{background:#000}
+.btn.acc{background:var(--c);border-color:var(--c);color:#fff}
+.btn.ghost{background:transparent;border-color:transparent}
+.btn.sm{padding:4px 9px;font-size:12.5px;border-radius:7px}
+.btn.xs{padding:2px 7px;font-size:11.5px;border-radius:6px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.wrap{padding:26px 30px 80px;max-width:1380px}
+.mhead{display:flex;align-items:flex-end;gap:18px;margin-bottom:16px;flex-wrap:wrap}
+.mhead h1{font-family:Fraunces;font-weight:600;font-size:36px;line-height:1.05;margin:0;letter-spacing:-.01em}
+.mhead h1 em{color:var(--c);font-style:italic;font-weight:500}
+.mhead .kick{font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--c);font-weight:700;margin-bottom:6px}
+.mhead .acts{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.how{background:#fff;border:1px solid var(--rule);border-left:4px solid var(--c);border-radius:0 12px 12px 0;padding:12px 16px;margin-bottom:18px}
+.how summary{cursor:pointer;font-weight:700;list-style:none;display:flex;align-items:center;gap:8px}
+.how summary::-webkit-details-marker{display:none}
+.how summary::before{content:"▸";color:var(--c);transition:transform .15s}
+.how[open] summary::before{transform:rotate(90deg)}
+.how ol{margin:10px 0 2px;padding-left:22px}
+.how li{margin-bottom:4px}
+.how .tip{margin-top:8px;color:var(--mut);font-size:13.5px}
+.card{background:#fff;border:1px solid var(--rule);border-radius:14px;padding:16px 18px}
+.card h3,.sect{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--c);margin:0 0 10px;font-weight:700}
+.grid{display:grid;gap:16px}
+.grid>*{min-width:0}
+.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g21{grid-template-columns:2fr 1fr}.g12{grid-template-columns:1fr 2fr}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.mut{color:var(--mut)}
+.small{font-size:13px}
+.mono{font-family:"JetBrains Mono",monospace}
+label.f{display:flex;flex-direction:column;gap:4px;font-size:12.5px;font-weight:600;color:var(--mut)}
+.inp{border:1px solid var(--rule);background:#fff;border-radius:8px;padding:7px 10px;min-width:0}
+.inp:focus{outline:2px solid color-mix(in srgb,var(--c) 35%,transparent);border-color:var(--c)}
+.inp.n{width:74px;text-align:right;font-family:"JetBrains Mono",monospace;font-size:14px}
+.inp.big{font-size:17px;font-weight:600;width:100%}
+.tblwrap{overflow:auto;border:1px solid var(--rule);border-radius:12px;background:#fff}
+table.t{border-collapse:separate;border-spacing:0;width:100%;font-size:14px}
+table.t th,table.t td{border-bottom:1px solid #EEE8DC;border-right:1px solid #EEE8DC;padding:6px 8px;text-align:center;vertical-align:middle}
+table.t tr>*:last-child{border-right:0}
+table.t tbody tr:last-child>*{border-bottom:0}
+table.t thead th{background:var(--soft);font-weight:700;font-size:13px;position:sticky;top:0;z-index:1}
+table.t thead th .s{display:block;font-weight:500;color:var(--mut);font-size:11.5px}
+table.t td.l,table.t th.l{text-align:left}
+table.t td.crit{text-align:left;font-weight:600;background:#FBF8F1;min-width:150px}
+table.t tr.sum td{background:#FFFBEA}
+table.t tr.sum.first td{border-top:2px solid #E8DFC8}
+table.t tr.net td{background:#FFF3C9;font-weight:700}
+td.pos{background:var(--pos)!important;color:var(--posT);font-weight:700}
+td.neg{background:var(--neg)!important;color:var(--negT);font-weight:700}
+td.datum,th.datum{background:#EEF7F7!important;color:var(--datum)}
+td.diag{background:var(--soft);color:#b0a99c}
+td.mirror{color:#9a9488;background:#FCFAF6}
+td.tot,th.tot{background:#FFF3C9!important;font-weight:700}
+select.cell{appearance:none;-webkit-appearance:none;border:1px solid transparent;background:transparent;border-radius:6px;padding:4px 6px;text-align:center;text-align-last:center;font-weight:700;cursor:pointer;min-width:48px;font-family:"JetBrains Mono",monospace;font-size:14px}
+select.cell:hover{border-color:#d9cfbc;background:#fff}
+select.cell:focus{outline:2px solid var(--c)}
+.chip{display:inline-flex;align-items:center;gap:6px;border-radius:99px;padding:3px 10px 3px 4px;font-size:12.5px;font-weight:600;background:#fff;border:1px solid var(--rule);cursor:pointer;white-space:nowrap}
+.chip b{color:#fff;border-radius:99px;padding:1px 7px;font-family:"JetBrains Mono",monospace;font-size:11px}
+.chip.on{border-color:var(--ink);box-shadow:0 0 0 2px var(--ink) inset}
+.chip.off{opacity:.45}
+.pill{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:99px;background:var(--soft);color:var(--mut)}
+.pill.ok{background:var(--pos);color:var(--posT)}.pill.bad{background:var(--neg);color:var(--negT)}.pill.warn{background:#FFF1D6;color:#9a6700}
+.note{border-radius:12px;padding:12px 14px;font-size:14px}
+.note.ok{background:#EEF6EF;border:1px solid #CFE6D3}.note.bad{background:#FDF0EE;border:1px solid #F4CFC9}.note.warn{background:#FFF7E6;border:1px solid #F3DDB0}.note.info{background:#fff;border:1px solid var(--rule)}
+.formula{font-family:"JetBrains Mono",monospace;background:#1d1b18;color:#FBF8F1;border-radius:10px;padding:10px 14px;display:inline-block;font-size:15px}
+.formula b{color:#FFC78A}
+.bignum{font-family:Fraunces;font-size:44px;font-weight:600;line-height:1;color:var(--c)}
+/* morph */
+.morph td.sf{min-width:210px;background:#FBF8F1;text-align:left}
+.morph td.idea{min-width:150px;text-align:left;vertical-align:top;position:relative}
+.morph td.idea .ib{display:flex;flex-direction:column;gap:4px}
+.morph td.idea textarea{border:1px solid transparent;border-radius:6px;resize:none;padding:4px 6px;width:100%;min-height:38px;background:transparent;font-size:13.5px;line-height:1.3}
+.morph td.idea textarea:hover{border-color:var(--rule);background:#FFFDF8}
+.morph td.idea textarea:focus{border-color:var(--morph);background:#fff;outline:none}
+.morph td.idea.out textarea,.morph td.idea.out .itxt{text-decoration:line-through;color:#a59f94}
+.morph td.idea .tools{display:flex;gap:4px;opacity:0;transition:opacity .1s}
+.morph td.idea:hover .tools,.morph td.idea:focus-within .tools{opacity:1}
+.morph td.build{cursor:pointer;transition:background .1s}
+.morph td.build:hover{background:#EDF2FF}
+.morph td.build.picked{background:#E7EDFF;box-shadow:inset 0 0 0 2px var(--morph)}
+.morph td.build.out{cursor:not-allowed;background:repeating-linear-gradient(45deg,#fff,#fff 6px,#F6F2EA 6px,#F6F2EA 12px)}
+.itxt{font-size:13.5px;line-height:1.3;display:block;padding:2px 2px 4px}
+.dots{display:flex;gap:3px;flex-wrap:wrap}
+.dot{font-size:10.5px;font-weight:700;color:#fff;border-radius:99px;padding:0 6px;font-family:"JetBrains Mono",monospace;line-height:17px}
+.morphbox{position:relative}
+#pathsvg{position:absolute;inset:0;pointer-events:none;z-index:2}
+.seg{display:inline-flex;background:var(--soft);border-radius:10px;padding:3px}
+.seg button{border:0;background:transparent;padding:6px 12px;border-radius:8px;font-weight:600;cursor:pointer;font-size:13px;color:var(--mut)}
+.seg button.on{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.clist{display:flex;flex-direction:column;gap:8px}
+.citem{display:grid;grid-template-columns:auto 70px 1fr auto;gap:8px;align-items:center;border:1px solid var(--rule);border-radius:10px;padding:6px 8px;background:#fff}
+.citem.act{border-color:var(--morph);box-shadow:0 0 0 2px #DBE4FF}
+.swatch{width:14px;height:14px;border-radius:50%}
+/* cbox */
+.cboxwrap{position:relative;user-select:none;touch-action:none}
+.cboxwrap svg{width:100%;height:auto;display:block}
+.cboxwrap .q{cursor:pointer}
+.cboxwrap .pt{cursor:grab}
+.cboxwrap .pt:active{cursor:grabbing}
+/* home */
+.hero{background:#1d1b18;color:#FBF8F1;border-radius:20px;padding:30px 34px;display:grid;grid-template-columns:1.3fr 1fr;gap:26px;align-items:center}
+.hero h1{font-family:Fraunces;font-size:44px;line-height:1.02;margin:0 0 12px;font-weight:600}
+.hero h1 em{color:#FFB37A;font-weight:500}
+.hero p{color:#D8D0C1;margin:0 0 10px;font-size:16px}
+.excards{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.ex{background:#fff;border:1px solid var(--rule);border-radius:14px;padding:16px;cursor:pointer;display:flex;flex-direction:column;gap:6px;transition:transform .12s,box-shadow .12s;text-align:left}
+.ex:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(60,40,10,.08)}
+.ex h4{margin:0;font-family:Fraunces;font-size:20px;font-weight:600}
+.ex .tg{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--acc)}
+.ex .mt{display:flex;gap:5px;flex-wrap:wrap;margin-top:auto;padding-top:6px}
+.ex .mt span{font-size:11px;background:var(--soft);border-radius:99px;padding:2px 8px;color:var(--mut);font-weight:600}
+.ex.cur{border-color:var(--ink);box-shadow:0 0 0 2px var(--ink) inset}
+.mcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.mc{border:1px solid var(--rule);background:#fff;border-radius:12px;padding:12px 14px;cursor:pointer;text-align:left;border-top:4px solid var(--c)}
+.mc b{display:block;margin-bottom:3px}
+.mc span{font-size:13px;color:var(--mut)}
+/* modal & toast */
+.modal{position:fixed;inset:0;background:rgba(29,27,24,.45);display:flex;align-items:center;justify-content:center;z-index:100;padding:20px}
+.modal .box{background:#fff;border-radius:16px;padding:22px;max-width:480px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.modal h3{margin:0 0 8px;font-family:Fraunces;font-size:22px}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#1d1b18;color:#fff;padding:10px 16px;border-radius:10px;z-index:200;font-weight:600;font-size:14px;box-shadow:0 10px 30px rgba(0,0,0,.25);max-width:90vw}
+.bar{height:8px;border-radius:99px;background:var(--soft);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--c)}
+.spark{display:flex;gap:2px;align-items:flex-end;height:30px}
+.spark i{width:9px;background:var(--c);border-radius:2px 2px 0 0;opacity:.85}
+.hidden{display:none!important}
+.mobnav{display:none}
+@media (max-width:980px){
+ .app{grid-template-columns:1fr}
+ aside{display:none}
+ .mobnav{display:flex;gap:6px;overflow:auto;padding:10px 14px;background:#1d1b18;position:sticky;top:0;z-index:30}
+ .mobnav button{flex:none;border:0;border-radius:99px;padding:7px 12px;background:#2b2924;color:#EDE6D8;font-weight:600;font-size:13px}
+ .mobnav button.on{background:#FBF8F1;color:#1d1b18}
+ .top{top:52px;padding:10px 14px}
+ .wrap{padding:18px 14px 70px}
+ .g2,.g3,.g21,.g12,.hero{grid-template-columns:1fr}
+ .mhead h1{font-size:28px}
+}
+/* ---------- touch & mobile layer ---------- */
+.segc{display:inline-flex;gap:4px;flex-wrap:wrap}
+.segc button{min-width:42px;min-height:40px;border:1px solid var(--rule);background:#fff;border-radius:9px;font-family:"JetBrains Mono",monospace;font-weight:700;font-size:15px;cursor:pointer;padding:0 8px}
+.segc button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.segc button.on.p{background:var(--posT);border-color:var(--posT)}
+.segc button.on.m{background:var(--negT);border-color:var(--negT)}
+.segc button.on.z{background:#6b665d;border-color:#6b665d}
+.mlist{display:flex;flex-direction:column;gap:10px}
+.mrow{background:#fff;border:1px solid var(--rule);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.mrow .h{display:flex;justify-content:space-between;gap:8px;align-items:baseline;font-weight:600}
+.mrow .h .w{font-family:"JetBrains Mono",monospace;font-size:12.5px;color:var(--mut);font-weight:500}
+.cpick{display:flex;gap:6px;overflow-x:auto;padding:2px 2px 8px;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+.cpick .chip{padding:7px 12px 7px 6px;font-size:13.5px}
+.stick{position:sticky;top:0;z-index:5;background:var(--paper);padding:8px 0 4px}
+.sumgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
+.sumcell{background:#fff;border:1px solid var(--rule);border-radius:10px;padding:8px 10px}
+.sumcell .k{font-size:11px;color:var(--mut);font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.sumcell .v{font-family:Fraunces;font-size:24px;font-weight:600}
+.nextbar{display:flex;justify-content:space-between;gap:10px;margin-top:26px;flex-wrap:wrap}
+.menu{position:absolute;right:14px;top:52px;background:#fff;border:1px solid var(--rule);border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.15);padding:6px;display:flex;flex-direction:column;z-index:60;min-width:200px}
+.menu button,.menu label{border:0;background:transparent;text-align:left;padding:11px 12px;border-radius:8px;font-weight:600;cursor:pointer;font-size:14.5px}
+.menu button:hover,.menu label:hover{background:var(--soft)}
+.morph-cards{display:flex;flex-direction:column;gap:12px}
+.mcard{background:#fff;border:1px solid var(--rule);border-radius:14px;padding:12px}
+.mcard .sfn{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.mcard .ideas{display:flex;flex-direction:column;gap:6px}
+.mcard .idea{display:flex;gap:8px;align-items:center;border:1px solid #EEE8DC;border-radius:10px;padding:8px 10px;min-height:46px}
+.mcard .idea.picked{background:#E7EDFF;border-color:var(--morph);box-shadow:inset 0 0 0 1px var(--morph)}
+.mcard .idea.out .itxt,.mcard .idea.out input{text-decoration:line-through;color:#a59f94}
+.mcard .idea input{flex:1;border:0;background:transparent;font-size:15px;min-width:0;padding:4px 0}
+.mcard .idea input:focus{outline:none}
+.mcard .idea .itxt{flex:1}
+.ib-x{border:0;background:var(--soft);border-radius:8px;min-width:36px;min-height:36px;cursor:pointer;font-weight:700;color:var(--mut)}
+@media (max-width:980px){
+  .topacts{display:none!important}
+  .top{flex-wrap:nowrap}
+  .top .sp{display:none}
+  .top .proj{flex:1;min-width:0}
+  .top .proj input{min-width:0;width:100%}
+  .moremenu{display:inline-flex!important}
+}
+@media (min-width:981px){ .moremenu{display:none!important} }
+@media (max-width:760px){
+  body{font-size:15.5px}
+  .mhead{margin-bottom:12px}
+  .mhead .acts{margin-left:0;width:100%}
+  .mhead .acts .btn{flex:1;justify-content:center;min-height:42px}
+  .btn{min-height:38px}
+  .btn.sm{min-height:36px}
+  .btn.xs{min-height:30px;padding:4px 9px}
+  .inp{padding:10px 12px;font-size:16px}
+  .inp.n{width:84px;font-size:16px}
+  select.inp{font-size:16px}
+  .card{padding:14px}
+  .hero{padding:22px 20px}
+  .hero h1{font-size:32px}
+  .how{padding:10px 12px}
+  table.t{font-size:13px}
+  table.t td.crit{min-width:120px;position:sticky;left:0;z-index:1}
+  table.t thead th:first-child{position:sticky;left:0;z-index:2}
+  .citem{grid-template-columns:auto 58px 1fr auto}
+  .toast{bottom:16px;width:max-content}
+  .nextbar .btn{flex:1;justify-content:center;min-height:44px}
+}
+@media (min-width:761px){.cpick{flex-wrap:wrap;overflow:visible}}
+
+</style>
+</head>
+<body>
+<div class="mobnav" id="mobnav"></div>
+<div class="app">
+  <aside id="aside"></aside>
+  <main>
+    <div class="top">
+      <div class="proj"><span class="mut small">Project</span><input id="projname" data-fid="projname" aria-label="Project name"></div>
+      <span class="sp"></span>
+      <button class="btn sm" id="bLoadEx">Examples</button>
+      <button class="btn sm" id="bSave">Save project</button>
+      <label class="btn sm" style="cursor:pointer">Open project<input type="file" id="fOpen" accept=".json,application/json" class="hidden"></label>
+      <button class="btn sm pri" id="bReport">Full report PDF</button>
+    </div>
+    <div class="wrap" id="view"></div>
+  </main>
+</div>
+<div id="layer"></div>
+<script>/* Shared example data — used by BOTH the teaching PDF and the practice tool.
+   Ratings: screening uses numbers (-2..2) shown as --,-,0,+,++ ; pairwise stores row-vs-column for i<j. */
+window.L19_EXAMPLES = [
+{
+  id: "nailer",
+  name: "Power Nailer",
+  tag: "Lecture example",
+  blurb: "Morphological matrix for a tool that drives nails using electricity.",
+  overall: "Drive nails into wood using electrical energy",
+  subfunctions: [
+    { name: "Convert electrical energy into mechanical (translation) energy", ideas: [
+      { t: "Rotary motor with transmission" }, { t: "Linear motor" }, { t: "Solenoid" }, { t: "Rail gun", x: true } ] },
+    { name: "Accumulate energy", ideas: [ { t: "Spring" }, { t: "Moving mass" } ] },
+    { name: "Apply energy to a nail", ideas: [ { t: "Single impact" }, { t: "Multiple impacts" } ] }
+  ],
+  concepts: [
+    { id: "N1", name: "Spring Shot",   picks: [0,0,0], note: "Motor winds a spring, released in one blow" },
+    { id: "N2", name: "Hammer Drive",  picks: [1,1,1], note: "Linear motor moves a mass in repeated blows" },
+    { id: "N3", name: "Solenoid Tapper", picks: [2,1,1], note: "Solenoid throws a mass many times" }
+  ],
+  criteria: [], cbox: null, screening: null, pairwise: null, scoring: null
+},
+{
+  id: "power",
+  name: "Personal Power Generation",
+  tag: "Lecture example",
+  blurb: "Generate power from human activity — morphological matrix, C-box and criteria weighting.",
+  overall: "Generate power from human activity",
+  subfunctions: [
+    { name: "Convert human activity into energy", ideas: [
+      { t: "Hand crank" }, { t: "Shaking" }, { t: "Pedalling" }, { t: "Footstep (heel strike)" }, { t: "Pull-string spin" } ] },
+    { name: "Capture energy", ideas: [ { t: "Rotary dynamo" }, { t: "Linear magnet & coil" }, { t: "Piezo element" } ] },
+    { name: "Store energy", ideas: [ { t: "Rechargeable battery" }, { t: "Supercapacitor" }, { t: "Wound spring" } ] },
+    { name: "Use energy", ideas: [ { t: "USB phone charging" }, { t: "LED light" }, { t: "Radio" } ] }
+  ],
+  concepts: [
+    { id: "P1", name: "Crank Box",     picks: [0,0,0,0], pos: { x: 0.80, y: 0.22 } },
+    { id: "P2", name: "Shake Torch",   picks: [1,1,1,1], pos: { x: 0.68, y: 0.36 } },
+    { id: "P3", name: "Step Shoe",     picks: [3,2,0,0], pos: { x: 0.18, y: 0.66 } },
+    { id: "P4", name: "Pedal Pack",    picks: [2,0,0,0], pos: { x: 0.26, y: 0.26 } },
+    { id: "P5", name: "Yo-yo Charger", picks: [4,0,1,0], pos: { x: 0.74, y: 0.80 } },
+    { id: "P6", name: "Wind-up Radio", picks: [0,0,2,2], pos: { x: 0.88, y: 0.12 } },
+    { id: "P7", name: "Step Light",    picks: [3,2,1,1], pos: { x: 0.62, y: 0.66 } }
+  ],
+  cbox: { xName: "Feasibility", xLo: "Difficult", xHi: "Easy", yName: "Creativity", yLo: "Not creative", yHi: "Very creative", keep: "TR" },
+  criteria: [
+    { name: "Energy output", w: 40 }, { name: "Portability", w: 30 }, { name: "Ease of use", w: 20 }, { name: "Cost", w: 10 }
+  ],
+  weighting: {
+    method: "matrix",
+    /* row more important than column → 1 ; stored for i<j */
+    matrix: { "0|1": 1, "0|2": 1, "0|3": 1, "1|2": 1, "1|3": 1, "2|3": 1 },
+    tree: { groups: [ { name: "Performance", w: 70 }, { name: "Product", w: 30 } ],
+            local: [ { g: 0, w: 60 }, { g: 1, w: 70 }, { g: 0, w: 40 }, { g: 1, w: 30 } ] }
+  },
+  screening: null, pairwise: null, scoring: null
+},
+{
+  id: "tiffin",
+  name: "Tiffin Box (full worked case)",
+  tag: "Worked case — every method",
+  blurb: "A lunch box that keeps food hot until lunch. Runs through every method from matrix to final choice.",
+  overall: "Carry home-cooked food and keep it hot until lunch",
+  subfunctions: [
+    { name: "Keep food warm", ideas: [ { t: "Vacuum double wall" }, { t: "Insulated foam jacket" }, { t: "USB heating plate" }, { t: "Heat-pack sleeve" } ] },
+    { name: "Separate dishes", ideas: [ { t: "Stacked steel containers" }, { t: "One box with dividers" }, { t: "Nested bowls" } ] },
+    { name: "Seal against leaks", ideas: [ { t: "Gasket + clip lid" }, { t: "Screw-top lid" }, { t: "Elastic strap" } ] },
+    { name: "Carry", ideas: [ { t: "Clip handle" }, { t: "Shoulder-strap bag" } ] }
+  ],
+  concepts: [
+    { id: "D",  name: "Existing steel tiffin", picks: [-1,0,0,0], ref: true, pos: { x: 0.85, y: 0.12 }, note: "Today's product — used as datum" },
+    { id: "T1", name: "Thermo Stack",  picks: [0,0,0,0], pos: { x: 0.70, y: 0.30 } },
+    { id: "T2", name: "Heat Plate",    picks: [2,1,0,1], pos: { x: 0.25, y: 0.75 } },
+    { id: "T3", name: "Nest Flask",    picks: [0,2,1,1], pos: { x: 0.72, y: 0.72 } },
+    { id: "T4", name: "Heat-Pack Bag", picks: [3,0,2,1], pos: { x: 0.60, y: 0.62 } },
+    { id: "T5", name: "Slim Divider",  picks: [1,1,1,0], pos: { x: 0.82, y: 0.40 } }
+  ],
+  cbox: { xName: "Feasibility", xLo: "Difficult", xHi: "Easy", yName: "Creativity", yLo: "Not creative", yHi: "Very creative", keep: "TR" },
+  criteria: [
+    { name: "Keeps food warm", w: 30 }, { name: "Leak-proof", w: 20 }, { name: "Easy to clean", w: 15 },
+    { name: "Light to carry", w: 15 }, { name: "Low cost", w: 10 }, { name: "Durability", w: 10 }
+  ],
+  weighting: { method: "direct" },
+  screening: {
+    datum: "D", include: ["T1","T2","T3","T4","T5"], scale: 3,
+    r: { T1: [1,1,0,-1,-1,1], T2: [1,1,-1,0,-1,-1], T3: [1,1,1,0,-1,0], T4: [1,-1,0,1,0,0], T5: [-1,1,0,1,1,0] },
+    cont: { T1: true, T2: false, T3: true, T4: false, T5: true }
+  },
+  pairwise: {
+    include: ["T1","T3","T5"], crit: [0,3], weights: [70,30],
+    t: { "0": { "T1|T3": 0, "T1|T5": 1, "T3|T5": 1 }, "3": { "T1|T3": -1, "T1|T5": -1, "T3|T5": -1 } }
+  },
+  scoring: {
+    include: ["D","T1","T3","T5"], ref: "D", scale: "1-5",
+    r: { D: [3,3,3,3,3,3], T1: [5,4,3,2,2,4], T3: [5,4,4,3,2,3], T5: [2,4,3,4,4,3] },
+    cont: { D: "No", T1: "No", T3: "Develop", T5: "No" },
+    profiles: [ { name: "Parent (buyer)", w: [15,20,15,5,30,15] } ]
+  }
+},
+{
+  id: "syringe",
+  name: "Reusable Insulin Syringe",
+  tag: "Lecture example",
+  blurb: "Seven syringe concepts screened against an existing product, then scored with weights.",
+  overall: "Deliver an accurate, user-set dose of insulin, reusably",
+  subfunctions: [],
+  concepts: [
+    { id: "A", name: "Master Cylinder", note: "Slide mode selector to set dose" },
+    { id: "B", name: "Rubber Brake", note: "Turn plunger to set or store dose" },
+    { id: "C", name: "Ratchet", note: "Turn and pull plunger back to set dose" },
+    { id: "D", name: "Plunge Stop", note: "Screw sleeve forward to set dose" },
+    { id: "E", name: "Swash Ring", note: "Rotate dose-set ring, then push plunger" },
+    { id: "F", name: "Lever Set", note: "Push lever forward to set, back to inject" },
+    { id: "G", name: "Dial Screw", note: "Turn set knob, press actuator to inject" },
+    { id: "REF", name: "Existing Product", ref: true, note: "Reference for screening" },
+    { id: "DF", name: "Lever Stop (D+F)", note: "Combined from D and F" },
+    { id: "G+", name: "Dial Screw+", note: "Improved version of G" }
+  ],
+  criteria: [
+    { name: "Ease of Handling", w: 5 }, { name: "Ease of Use", w: 15 }, { name: "Readability of Settings", w: 10 },
+    { name: "Dose Metering Accuracy", w: 25 }, { name: "Durability", w: 15 }, { name: "Ease of Manufacture", w: 20 },
+    { name: "Portability", w: 10 }
+  ],
+  weighting: { method: "direct" },
+  cbox: null,
+  screening: {
+    datum: "REF", include: ["A","B","C","D","E","F","G"], scale: 3,
+    r: { A: [0,0,0,1,0,1,1], B: [0,-1,0,1,0,-1,1], C: [-1,-1,1,1,0,-1,-1], D: [0,0,0,1,0,0,-1],
+         E: [0,0,1,1,0,0,0], F: [-1,1,0,0,1,-1,-1], G: [-1,0,1,1,0,0,-1] },
+    rankOverride: { A: 1, B: 3, C: 7, D: 5, E: 2, F: 6, G: 4 },
+    cont: { A: true, B: true, C: false, D: false, E: true, F: false, G: true }
+  },
+  pairwise: null,
+  scoring: {
+    include: ["A","DF","E","G+"], ref: "A", scale: "1-5",
+    r: { A: [3,3,2,3,2,3,3], DF: [3,4,3,3,5,3,3], E: [4,4,5,2,4,2,3], "G+": [4,3,5,3,3,2,3] },
+    cont: { A: "No", DF: "Develop", E: "No", "G+": "No" },
+    profiles: []
+  }
+},
+{
+  id: "slides",
+  name: "Lecture tables: S1–S4",
+  tag: "Lecture example",
+  blurb: "The datum-method and pairwise-comparison tables exactly as shown in the lecture.",
+  overall: "Compare four alternative solutions S1–S4",
+  subfunctions: [],
+  concepts: [ { id: "S1", name: "S1" }, { id: "S2", name: "S2" }, { id: "S3", name: "S3" }, { id: "S4", name: "S4" } ],
+  criteria: [ { name: "Criterion 1", w: 25 }, { name: "Criterion 2", w: 25 }, { name: "Criterion 3", w: 25 }, { name: "Criterion 4", w: 25 } ],
+  weighting: { method: "direct" },
+  cbox: null,
+  screening: {
+    datum: "S4", include: ["S1","S2","S3"], scale: 5,
+    r: { S1: [2,1,0,2], S2: [-2,1,-1,-2], S3: [0,0,1,-1] },
+    cont: { S1: true, S2: false, S3: true }
+  },
+  pairwise: {
+    include: ["S1","S2","S3","S4"], crit: [0], weights: [100],
+    t: { "0": { "S1|S2": -1, "S1|S3": -1, "S1|S4": 0, "S2|S3": 1, "S2|S4": 1, "S3|S4": 1 } }
+  },
+  scoring: null
+},
+{
+  id: "pencil",
+  name: "Mechanical Pencils (exercise)",
+  tag: "Practice exercise",
+  blurb: "Five mechanical pencils. Choose criteria, pick a datum, screen, then score.",
+  overall: "Write and draw with a refillable, fine lead",
+  subfunctions: [],
+  concepts: [
+    { id: "P1", name: "Pencil 1 (light grey, slim)" }, { id: "P2", name: "Pencil 2 (black, cap)" },
+    { id: "P3", name: "Pencil 3 (black, clip)" }, { id: "P4", name: "Pencil 4 (transparent)" },
+    { id: "P5", name: "Pencil 5 (grey, metal tip)" }
+  ],
+  criteria: [ { name: "Comfortable grip", w: 25 }, { name: "Lead does not break", w: 25 }, { name: "Easy to refill", w: 15 },
+              { name: "Looks good", w: 10 }, { name: "Low cost", w: 15 }, { name: "Clip / portability", w: 10 } ],
+  weighting: { method: "direct" },
+  cbox: null,
+  screening: { datum: "P1", include: ["P2","P3","P4","P5"], scale: 3, r: {}, cont: {} },
+  pairwise: null,
+  scoring: { include: ["P1","P2","P3","P4","P5"], ref: "P1", scale: "1-5", r: {}, cont: {}, profiles: [] }
+}
+];
+</script>
+<script>/* Shared calculations — used by BOTH the teaching PDF and the practice tool. */
+window.L19 = (function () {
+  const round = (v, d = 2) => Math.round(v * Math.pow(10, d) + 1e-9) / Math.pow(10, d);
+  const fmt = (v, d = 2) => {
+    if (v === null || v === undefined || isNaN(v)) return "–";
+    const r = round(v, d);
+    return (Math.abs(r - Math.round(r)) < 1e-9 && d <= 2 ? r.toFixed(d === 0 ? 0 : 2) : r.toFixed(d)).replace(/\.?0+$/, m => (d && m.includes(".") ? (r % 1 === 0 ? "" : m) : m));
+  };
+  const f2 = v => (v === null || v === undefined || isNaN(v)) ? "–" : round(v, 2).toFixed(2);
+  const sym = (v) => v === 0 ? "0" : v > 0 ? "+".repeat(v) : "−".repeat(-v);
+  const signed = v => v > 0 ? "+" + v : v < 0 ? "−" + Math.abs(v) : "0";
+
+  function conceptById(ex, id) { return (ex.concepts || []).find(c => c.id === id); }
+
+  function counts(ex) {
+    const sf = ex.subfunctions || [];
+    if (!sf.length) return { theoretical: 0, practical: 0, factors: [], pfactors: [] };
+    const factors = sf.map(s => s.ideas.length);
+    const pfactors = sf.map(s => s.ideas.filter(i => !i.x).length);
+    return {
+      factors, pfactors,
+      theoretical: factors.reduce((a, b) => a * b, 1),
+      practical: pfactors.reduce((a, b) => a * b, 1)
+    };
+  }
+
+  /* rank with ties (competition ranking: 1,2,2,4) ; higher is better */
+  function rankOf(values) {
+    return values.map(v => 1 + values.filter(o => o > v + 1e-9).length);
+  }
+
+  function screening(ex) {
+    const s = ex.screening; if (!s) return null;
+    const n = ex.criteria.length;
+    const rows = s.include.map(id => {
+      const r = (s.r[id] || []).slice(0, n);
+      while (r.length < n) r.push(null);
+      let plus = 0, minus = 0, same = 0, plusCount = 0, minusCount = 0;
+      r.forEach(v => {
+        if (v === null || v === undefined) return;
+        if (v > 0) { plus += v; plusCount++; } else if (v < 0) { minus += -v; minusCount++; } else same++;
+      });
+      return { id, r, plus, minus, same, plusCount, minusCount, net: plus - minus };
+    });
+    const ranks = rankOf(rows.map(x => x.net));
+    rows.forEach((x, i) => {
+      x.autoRank = ranks[i];
+      x.tie = ranks.filter(k => k === ranks[i]).length > 1;
+      x.rank = (s.rankOverride && s.rankOverride[x.id]) || ranks[i];
+    });
+    return rows;
+  }
+
+  function pairwiseCrit(ex, critIdx) {
+    const p = ex.pairwise; const t = (p.t && p.t[String(critIdx)]) || {};
+    const ids = p.include;
+    const get = (a, b) => {
+      if (a === b) return null;
+      if (t[a + "|" + b] !== undefined) return t[a + "|" + b];
+      if (t[b + "|" + a] !== undefined) return -t[b + "|" + a];
+      return undefined;
+    };
+    const m = ids.map(a => ids.map(b => get(a, b)));
+    const sums = m.map(row => row.reduce((s, v) => s + (typeof v === "number" ? v : 0), 0));
+    const complete = m.every((row, i) => row.every((v, j) => i === j || v !== undefined));
+    return { ids, m, sums, complete };
+  }
+
+  function pairwise(ex) {
+    const p = ex.pairwise; if (!p) return null;
+    const crits = p.crit;
+    const ws = p.weights || crits.map(() => 100 / crits.length);
+    const wsum = ws.reduce((a, b) => a + b, 0) || 1;
+    const per = crits.map(c => pairwiseCrit(ex, c));
+    const totals = p.include.map((id, i) => per.reduce((s, pc, k) => s + pc.sums[i] * ws[k] / wsum, 0));
+    return { per, totals, ranks: rankOf(totals), ws: ws.map(w => w / wsum) };
+  }
+
+  function scoring(ex, weightsOverride) {
+    const s = ex.scoring; if (!s) return null;
+    const w = (weightsOverride || ex.criteria.map(c => c.w)).map(Number);
+    const wsum = w.reduce((a, b) => a + b, 0) || 1;
+    const wf = w.map(x => x / wsum);
+    const rows = s.include.map(id => {
+      const r = (s.r[id] || []).slice(0, ex.criteria.length);
+      while (r.length < ex.criteria.length) r.push(null);
+      const ws = r.map((v, i) => (v === null || v === undefined || v === "") ? null : Number(v) * wf[i]);
+      const total = ws.reduce((a, b) => a + (b || 0), 0);
+      return { id, r, ws, total, filled: r.every(v => v !== null && v !== undefined && v !== "") };
+    });
+    const ranks = rankOf(rows.map(x => x.total));
+    rows.forEach((x, i) => x.rank = ranks[i]);
+    return { rows, wf, wsum };
+  }
+
+  /* Matrix (pairwise) method for criteria weights: count wins, add 1 so none is zero, normalise */
+  function matrixWeights(n, matrix) {
+    const wins = Array(n).fill(0);
+    for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) {
+      const v = matrix[i + "|" + j];
+      if (v === 1) wins[i] += 1; else if (v === 0) wins[j] += 1; else if (v === 0.5) { wins[i] += .5; wins[j] += .5; }
+    }
+    const pts = wins.map(x => x + 1);
+    const tot = pts.reduce((a, b) => a + b, 0);
+    return { wins, pts, tot, w: pts.map(p => p / tot * 100) };
+  }
+
+  function treeWeights(tree) {
+    return tree.local.map(l => (tree.groups[l.g] ? tree.groups[l.g].w : 0) * l.w / 100);
+  }
+
+  return { round, f2, sym, signed, fmt, conceptById, counts, rankOf, screening, pairwiseCrit, pairwise, scoring, matrixWeights, treeWeights };
+})();
+</script>
+<script>(function () {
+"use strict";
+const EXAMPLES = window.L19_EXAMPLES, C = window.L19;
+const PAL = ["#3B5BDB", "#D9480F", "#0F8B8D", "#9C36B5", "#E8A317", "#2F9E44", "#C2255C", "#5C7CFA", "#845EF7", "#1098AD", "#F76707", "#66A80F"];
+const TABS = [
+  { id: "home", label: "Start", grp: "", c: "#57524a", ic: "★" },
+  { id: "morph", label: "Matrix & concepts", grp: "Generate", c: "#3B5BDB", ic: "1" },
+  { id: "cbox", label: "C-box", grp: "Filter", c: "#C98A10", ic: "2" },
+  { id: "weights", label: "Criteria & weights", grp: "Prepare", c: "#2F9E44", ic: "3" },
+  { id: "datum", label: "Datum method", grp: "Screen", c: "#0F8B8D", ic: "4" },
+  { id: "pair", label: "Pairwise comparison", grp: "Screen", c: "#9C36B5", ic: "5" },
+  { id: "score", label: "Weighted matrix", grp: "Score", c: "#D9480F", ic: "6" },
+  { id: "funnel", label: "Funnel & report", grp: "Wrap up", c: "#1d1b18", ic: "7" }
+];
+const SCALES = { "1-5": [1, 2, 3, 4, 5], "0-10": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "0-4": [0, 1, 2, 3, 4] };
+const SCALE_TXT = {
+  "1-5": ["1 much worse than reference", "2 worse than reference", "3 same as reference", "4 better than reference", "5 much better than reference"],
+  "0-10": ["0 absolutely useless", "1 very inadequate", "2 weak", "3 tolerable", "4 adequate", "5 satisfactory", "6 good, few drawbacks", "7 good", "8 very good", "9 exceeds the requirement", "10 ideal"],
+  "0-4": ["0 unsatisfactory", "1 just tolerable", "2 adequate", "3 good", "4 very good (ideal)"]
+};
+const KEY = "conceptlab-l19-v1";
+const mq = window.matchMedia("(max-width: 760px)");
+const isM = () => mq.matches;
+
+let P = null;
+const UI = { tab: "home", mode: "edit", active: null, pwCrit: 0, sel: {}, student: "", menu: false, showWork: false, exId: null };
+
+/* ---------------- utils ---------------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const clone = o => JSON.parse(JSON.stringify(o));
+const tabOf = id => TABS.find(t => t.id === id);
+const sum = a => a.reduce((x, y) => x + (Number(y) || 0), 0);
+function toast(msg) {
+  const t = document.createElement("div"); t.className = "toast"; t.textContent = msg; document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2600);
+}
+function save() { try { localStorage.setItem(KEY, JSON.stringify({ P, student: UI.student, tab: UI.tab, exId: UI.exId })); } catch (e) {} }
+function load() { try { const d = JSON.parse(localStorage.getItem(KEY) || "null"); if (d && d.P) { P = normalize(d.P); UI.student = d.student || ""; UI.tab = d.tab || "home"; UI.exId = d.exId || null; return true; } } catch (e) {} return false; }
+function cleanId(s) { return String(s || "").replace(/[.|]/g, "").trim().slice(0, 12); }
+
+function normalize(p) {
+  p = clone(p);
+  p.name = p.name || "My project";
+  p.overall = p.overall || "";
+  p.subfunctions = p.subfunctions || [];
+  p.concepts = (p.concepts || []).map(c => ({ id: cleanId(c.id), name: c.name || c.id, picks: c.picks || [], note: c.note || "", ref: !!c.ref, pos: c.pos || null }));
+  p.criteria = p.criteria || [];
+  p.cbox = p.cbox || { xName: "Feasibility", xLo: "Difficult", xHi: "Easy", yName: "Creativity", yLo: "Not creative", yHi: "Very creative", keep: "TR" };
+  p.weighting = p.weighting || { method: "direct" };
+  p.weighting.matrix = p.weighting.matrix || {};
+  p.weighting.tree = p.weighting.tree || { groups: [{ name: "Performance", w: 60 }, { name: "Economy", w: 40 }], local: [] };
+  while (p.weighting.tree.local.length < p.criteria.length) p.weighting.tree.local.push({ g: 0, w: 50 });
+  const first = p.concepts.find(c => c.ref) || p.concepts[0];
+  p.screening = p.screening || { datum: first ? first.id : null, include: p.concepts.filter(c => c !== first).map(c => c.id), scale: 3, r: {}, cont: {} };
+  p.screening.r = p.screening.r || {}; p.screening.cont = p.screening.cont || {}; p.screening.scale = p.screening.scale || 3;
+  delete p.screening.rankOverride;
+  p.pairwise = p.pairwise || { include: p.concepts.filter(c => !c.ref).slice(0, 4).map(c => c.id), crit: p.criteria.map((c, i) => i).slice(0, 3), weights: null, t: {} };
+  if (!p.pairwise.weights) p.pairwise.weights = p.pairwise.crit.map(i => (p.criteria[i] || {}).w || 0);
+  p.pairwise.t = p.pairwise.t || {};
+  p.scoring = p.scoring || { include: p.concepts.map(c => c.id).slice(0, 4), ref: first ? first.id : null, scale: "1-5", r: {}, cont: {}, profiles: [] };
+  p.scoring.r = p.scoring.r || {}; p.scoring.cont = p.scoring.cont || {}; p.scoring.profiles = p.scoring.profiles || [];
+  return p;
+}
+function fromExample(ex) { const p = normalize(ex); p.name = ex.name.replace(/ \(.*\)$/, ""); return p; }
+function blank() {
+  return normalize({ name: "My project", overall: "", subfunctions: [{ name: "Sub-function 1", ideas: [{ t: "" }, { t: "" }] }, { name: "Sub-function 2", ideas: [{ t: "" }, { t: "" }] }], concepts: [], criteria: [{ name: "Criterion 1", w: 50 }, { name: "Criterion 2", w: 50 }] });
+}
+const cById = id => P.concepts.find(c => c.id === id);
+const colorOf = id => { const i = P.concepts.findIndex(c => c.id === id); return PAL[(i < 0 ? 0 : i) % PAL.length]; };
+const cname = id => { const c = cById(id); return c ? c.name : id; };
+function chip(id, on, act, extra = "") { const c = cById(id); if (!c) return ""; return `<button class="chip ${on ? "on" : "off"}" data-act="${act}" data-id="${esc(id)}" ${extra}><b style="background:${colorOf(id)}">${esc(id)}</b>${esc(c.name !== id ? c.name : "")}</button>`; }
+function sym(v, scale) { if (v === null || v === undefined || v === "") return "·"; return C.sym(Number(v)); }
+function getPath(o, path) { return path.split(".").reduce((a, k) => (a == null ? a : a[k]), o); }
+function setPath(o, path, v) {
+  const ks = path.split("."); let a = o;
+  for (let i = 0; i < ks.length - 1; i++) { const k = ks[i]; if (a[k] == null) a[k] = /^\d+$/.test(ks[i + 1]) ? [] : {}; a = a[k]; }
+  a[ks[ks.length - 1]] = v;
+}
+function uniqueId(base) { base = cleanId(base) || "C"; let id = base, n = 2; while (cById(id)) id = base + n++; return id; }
+
+/* ---------------- shell ---------------- */
+function renderShell() {
+  let h = `<div class="brand">Concept <em>Lab</em></div><div class="brandsub">Lecture 19 · practise every method</div>`;
+  let g = null;
+  TABS.forEach(t => {
+    if (t.grp !== g) { g = t.grp; if (g) h += `<div class="navgrp">${g}</div>`; }
+    h += `<button class="nav ${UI.tab === t.id ? "on" : ""}" data-act="tab" data-id="${t.id}" style="--c:${t.c}"><i>${t.ic}</i>${t.label}<span class="badge">${badge(t.id)}</span></button>`;
+  });
+  h += `<div class="aside-foot">Your name (printed on downloads)<input data-bind="student" data-fid="student-a" value="${esc(UI.student)}" placeholder="Type your name"></div>`;
+  $("#aside").innerHTML = h;
+  $("#mobnav").innerHTML = TABS.map(t => `<button class="${UI.tab === t.id ? "on" : ""}" data-act="tab" data-id="${t.id}">${t.ic === "★" ? "Start" : t.ic + " · " + t.label}</button>`).join("");
+  const on = $("#mobnav .on"); if (on) on.scrollIntoView({ inline: "center", block: "nearest" });
+  const pn = $("#projname"); if (document.activeElement !== pn) pn.value = P.name;
+}
+function badge(id) {
+  if (id === "morph") return P.concepts.length || "";
+  if (id === "weights") return P.criteria.length || "";
+  if (id === "datum") return (P.screening.include || []).length || "";
+  if (id === "pair") return (P.pairwise.include || []).length || "";
+  if (id === "score") return (P.scoring.include || []).length || "";
+  return "";
+}
+function head(kick, title, acts = "") {
+  return `<div class="mhead"><div><div class="kick">${kick}</div><h1>${title}</h1></div><div class="acts">${acts}</div></div>`;
+}
+function expBtns(kind) { return `<button class="btn sm" data-act="png" data-k="${kind}">⬇ Image (PNG)</button><button class="btn sm" data-act="pdf" data-k="${kind}">⬇ PDF</button>`; }
+function how(title, steps, tip) { return `<details class="how" ${isM() ? "" : "open"}><summary>${title}</summary><ol>${steps.map(s => `<li>${s}</li>`).join("")}</ol>${tip ? `<div class="tip">${tip}</div>` : ""}</details>`; }
+function nextBar() {
+  const i = TABS.findIndex(t => t.id === UI.tab);
+  const pv = TABS[i - 1], nx = TABS[i + 1];
+  return `<div class="nextbar">${pv ? `<button class="btn" data-act="tab" data-id="${pv.id}">← ${pv.label}</button>` : "<span></span>"}${nx ? `<button class="btn pri" data-act="tab" data-id="${nx.id}">Next: ${nx.label} →</button>` : ""}</div>`;
+}
+
+function render() {
+  const ae = document.activeElement;
+  if (ae && ae.dataset && ae.dataset.fid) { let ss = null, se = null; try { ss = ae.selectionStart; se = ae.selectionEnd; } catch (e) {} pendingFocus = { fid: ae.dataset.fid, ss, se }; }
+  const t = tabOf(UI.tab);
+  document.documentElement.style.setProperty("--c", t.c === "#1d1b18" || t.c === "#57524a" ? "#D9480F" : t.c);
+  renderShell();
+  const v = $("#view");
+  v.innerHTML = VIEWS[UI.tab]() + (UI.tab !== "home" ? nextBar() : "");
+  if (UI.tab === "morph") drawPaths();
+  if (UI.tab === "cbox") bindCbox();
+  restoreFocus();
+}
+let lastFid = null, lastSel = null;
+document.addEventListener("focusin", e => { const f = e.target.dataset && e.target.dataset.fid; if (f) { lastFid = f; } });
+let pendingFocus = null;
+function restoreFocus() {
+  if (!pendingFocus) return; const f = pendingFocus; pendingFocus = null;
+  const el = document.querySelector(`[data-fid="${CSS.escape(f.fid)}"]`);
+  if (el) { try { el.focus({ preventScroll: true }); if (f.ss != null && el.setSelectionRange) el.setSelectionRange(f.ss, f.se); } catch (e) {} }
+}
+let rTimer = null;
+function rerenderSoon() { clearTimeout(rTimer); rTimer = setTimeout(() => { render(); }, 0); }
+
+/* ---------------- HOME ---------------- */
+function vHome() {
+  const methods = TABS.slice(1).map(t => `<button class="mc" style="--c:${t.c}" data-act="tab" data-id="${t.id}"><b>${t.ic}. ${t.label}</b><span>${({ morph: "Sub-functions, ideas, combine into concepts", cbox: "Quick 2×2 filter of a big pool", weights: "Criteria + weights (direct, matrix, tree)", datum: "Screen against a benchmark with + 0 −", pair: "Head-to-head, criterion by criterion", score: "Ratings × weights = overall value", funnel: "See the whole funnel; download a report" })[t.id]}</span></button>`).join("");
+  const exs = EXAMPLES.map(e => {
+    const tags = [e.subfunctions.length && "Matrix", e.cbox && e.concepts.some(c => c.pos) && "C-box", e.weighting && e.weighting.method === "matrix" && "Weights", e.screening && "Datum", e.pairwise && "Pairwise", e.scoring && "Scoring"].filter(Boolean);
+    return `<button class="ex ${UI.exId === e.id ? "cur" : ""}" data-act="loadex" data-id="${e.id}"><span class="tg">${esc(e.tag)}</span><h4>${esc(e.name)}</h4><span class="mut small">${esc(e.blurb)}</span><span class="mt">${tags.map(t => `<span>${t}</span>`).join("")}</span></button>`;
+  }).join("");
+  return `
+  <div class="hero">
+    <div><h1>Practise <em>concept generation</em> &amp; <em>selection</em></h1>
+      <p>Build a morphological matrix, filter with a C-box, weight your criteria, screen with the datum method and pairwise comparison, then score in a weighted matrix.</p>
+      <p>Every table can be downloaded as an image or PDF — or download one full report.</p></div>
+    <div class="card" style="background:#2b2924;border-color:#403c35;color:#EDE6D8">
+      <h3 style="color:#FFB37A">Your name</h3>
+      <input class="inp big" style="background:#1d1b18;border-color:#4a4640;color:#fff" data-bind="student" data-fid="student-h" value="${esc(UI.student)}" placeholder="Printed on your downloads">
+      <div class="row" style="margin-top:12px"><button class="btn acc" data-act="tab" data-id="morph">Continue: ${esc(P.name)} →</button><button class="btn" data-act="blank">New blank project</button></div>
+    </div>
+  </div>
+  <h2 style="font-family:Fraunces;font-size:26px;margin:28px 0 4px">Examples from the lecture</h2>
+  <p class="mut" style="margin:0 0 14px">Same examples and numbers as the lecture notes. Open one, change anything, and watch the results update.</p>
+  <div class="excards">${exs}</div>
+  <h2 style="font-family:Fraunces;font-size:26px;margin:30px 0 12px">The methods, in order</h2>
+  <div class="mcards">${methods}</div>
+  <div class="note info" style="margin-top:22px"><b>Your work is kept in this browser</b> on this device. Use <b>Save project</b> to keep a file, and <b>Open project</b> to continue on another device.</div>`;
+}
+
+/* ---------------- MORPH ---------------- */
+function vMorph() {
+  const cnt = C.counts(P);
+  const hasM = P.subfunctions.length > 0;
+  const build = UI.mode === "build";
+  const act = UI.active && cById(UI.active);
+  let h = head("Steps 1–3 · Generate", "Morphological <em>matrix</em>", expBtns("morph"));
+  h += how("How to build a morphological matrix", [
+    "Write the <b>overall function</b> (verb + noun) — what the product must do, not how.",
+    "Add <b>sub-functions</b> as rows. Keep them solution-neutral: “store energy”, not “use a battery”.",
+    "Add several alternative <b>ideas</b> in each row. Rule out any idea that is unrealistic (it stays visible, struck through).",
+    "Switch to <b>Build concepts</b>, create a concept and tap one idea in every row. One path = one concept.",
+    "Theoretical concepts = n₁ × n₂ × n₃ × … (multiply, never add)."
+  ], "Tip: concepts made here flow automatically into the C-box, datum method, pairwise and weighted matrix.");
+  h += `<div class="card" style="margin-bottom:14px"><h3>Overall function</h3><input class="inp big" data-bind="overall" data-fid="overall" value="${esc(P.overall)}" placeholder="e.g. Carry food and keep it hot until lunch"></div>`;
+  h += `<div class="grid" style="align-items:start">`;
+  h += `<div class="card"><div class="row" style="justify-content:space-between;margin-bottom:12px"><h3 style="margin:0">Matrix</h3>
+      <div class="seg"><button class="${!build ? "on" : ""}" data-act="mode" data-id="edit">Edit matrix</button><button class="${build ? "on" : ""}" data-act="mode" data-id="build">Build concepts</button></div></div>`;
+  if (build && P.concepts.length) h += `<div class="stick"><div class="cpick">${P.concepts.map(c => chip(c.id, UI.active === c.id, "buildc")).join("")}<button class="chip" data-act="addc"><b style="background:var(--ink)">+</b>New</button></div></div>`;
+  if (build) {
+    h += act ? `<div class="note info" style="margin-bottom:10px;border-color:${colorOf(act.id)}"><b style="color:${colorOf(act.id)}">Building ${esc(act.id)} · ${esc(act.name)}</b> — tap one idea in every row.${act.picks.filter(x => x >= 0).length === P.subfunctions.length ? ' <span class="pill ok">complete</span>' : ""}</div>`
+      : `<div class="note warn" style="margin-bottom:10px">Choose or create a concept on the right (below on phones), then tap one idea per row.</div>`;
+  }
+  if (!hasM) h += `<div class="note info">No sub-functions yet. ${P.concepts.length ? "This example lists its concepts directly — you can still add a matrix." : ""}</div>`;
+  h += isM() ? morphCards(build) : morphTable(build);
+  if (!build) h += `<div class="row" style="margin-top:12px"><button class="btn sm" data-act="addsf">+ Add sub-function</button></div>`;
+  h += `</div>`;
+  /* below */
+  h += `<div class="grid ${isM() ? "" : "g12"}" style="gap:14px;align-items:start">`;
+  if (hasM) {
+    const f = cnt.factors, pf = cnt.pfactors, diff = cnt.theoretical !== cnt.practical;
+    h += `<div class="card"><h3>How many concepts?</h3><div class="mut small">Theoretical</div><div class="bignum">${cnt.theoretical.toLocaleString()}</div>
+      <div class="formula" style="margin-top:8px">${f.map(x => `<b>${x}</b>`).join(" × ")} = ${cnt.theoretical.toLocaleString()}</div>
+      ${diff ? `<div class="mut small" style="margin-top:12px">After ruling out ideas</div><div class="bignum" style="font-size:32px;color:var(--ink)">${cnt.practical.toLocaleString()}</div><div class="formula" style="margin-top:6px">${pf.map(x => `<b>${x}</b>`).join(" × ")} = ${cnt.practical.toLocaleString()}</div>` : ""}
+      <p class="small mut" style="margin:10px 0 0">You have built <b>${P.concepts.filter(c => !c.ref).length}</b>. Only some combinations make practical sense — ideas must fit together.</p></div>`;
+  }
+  h += `<div class="card"><div class="row" style="justify-content:space-between;margin-bottom:10px"><h3 style="margin:0">Concepts</h3><div class="row" style="gap:6px">${hasM ? `<button class="btn xs" data-act="randc" title="Random practical combination">🎲 Random</button>` : ""}<button class="btn xs acc" data-act="addc">+ New concept</button></div></div><div class="clist" style="${isM() ? "" : "display:grid;grid-template-columns:1fr 1fr"}">`;
+  if (!P.concepts.length) h += `<div class="mut small">No concepts yet.</div>`;
+  P.concepts.forEach((c, i) => {
+    const picks = hasM ? P.subfunctions.map((s, si) => { const p = c.picks[si]; return p >= 0 && s.ideas[p] ? s.ideas[p].t : null; }) : [];
+    h += `<div class="citem ${UI.active === c.id && build ? "act" : ""}"><span class="swatch" style="background:${colorOf(c.id)}"></span>
+      <input class="inp" style="padding:5px 7px;font-family:'JetBrains Mono',monospace;font-size:13px" data-bind="concepts.${i}.id" data-id-edit="1" data-fid="cid-${i}" value="${esc(c.id)}" aria-label="Concept code">
+      <input class="inp" style="padding:5px 7px" data-bind="concepts.${i}.name" data-fid="cname-${i}" value="${esc(c.name)}" aria-label="Concept name">
+      <div class="row" style="gap:4px;flex-wrap:nowrap">${hasM ? `<button class="btn xs ${UI.active === c.id && build ? "acc" : ""}" data-act="buildc" data-id="${esc(c.id)}">Path</button>` : ""}<button class="btn xs ghost" data-act="delc" data-id="${esc(c.id)}" aria-label="Delete concept">✕</button></div>
+      ${hasM ? `<div class="small mut" style="grid-column:2/-1">${picks.map(p => p ? esc(p) : '<span style="color:#c9a">—</span>').join(" · ")}</div>` : (c.note ? `<div class="small mut" style="grid-column:2/-1">${esc(c.note)}</div>` : "")}
+      <label class="small mut" style="grid-column:2/-1;display:flex;gap:6px;align-items:center"><input type="checkbox" data-bind="concepts.${i}.ref" data-bool="1" ${c.ref ? "checked" : ""}> existing product / reference</label></div>`;
+  });
+  h += `</div></div></div></div>`;
+  return h;
+}
+function morphTable(build) {
+  const max = Math.max(2, ...P.subfunctions.map(s => s.ideas.length));
+  if (!P.subfunctions.length) return "";
+  let h = `<div class="morphbox"><div class="tblwrap" id="mtw"><table class="t morph"><thead><tr><th class="l">Sub-function</th>`;
+  for (let i = 0; i < max; i++) h += `<th>Idea ${i + 1}</th>`;
+  if (!build) h += `<th></th>`;
+  h += `</tr></thead><tbody>`;
+  P.subfunctions.forEach((s, si) => {
+    h += `<tr><td class="sf">${build ? `<b>${esc(s.name)}</b>` : `<div class="row" style="flex-wrap:nowrap;gap:4px"><textarea class="inp" style="width:100%;min-height:38px;resize:vertical;font-weight:600" rows="2" data-bind="subfunctions.${si}.name" data-fid="sf-${si}">${esc(s.name)}</textarea><button class="btn xs ghost" data-act="delsf" data-i="${si}" title="Delete row">✕</button></div>`}</td>`;
+    for (let ii = 0; ii < max; ii++) {
+      const idea = s.ideas[ii];
+      if (!idea) { h += `<td class="idea" style="background:repeating-linear-gradient(45deg,#fff,#fff 6px,#F8F5EE 6px,#F8F5EE 12px)"></td>`; continue; }
+      const dots = P.concepts.filter(c => c.picks[si] === ii).map(c => `<span class="dot" style="background:${colorOf(c.id)}">${esc(c.id)}</span>`).join("");
+      if (build) {
+        const picked = UI.active && cById(UI.active) && cById(UI.active).picks[si] === ii;
+        h += `<td class="idea build ${idea.x ? "out" : ""} ${picked ? "picked" : ""}" id="cell-${si}-${ii}" data-act="${idea.x ? "" : "pick"}" data-si="${si}" data-ii="${ii}"><span class="itxt">${esc(idea.t || "(empty)")}</span><span class="dots">${dots}</span></td>`;
+      } else {
+        h += `<td class="idea ${idea.x ? "out" : ""}" id="cell-${si}-${ii}"><div class="ib"><textarea rows="2" data-bind="subfunctions.${si}.ideas.${ii}.t" data-fid="idea-${si}-${ii}" placeholder="Idea…">${esc(idea.t)}</textarea><span class="dots">${dots}</span>
+          <div class="tools"><button class="btn xs" data-act="ruleout" data-si="${si}" data-ii="${ii}">${idea.x ? "Restore" : "Rule out"}</button><button class="btn xs ghost" data-act="delidea" data-si="${si}" data-ii="${ii}">✕</button></div></div></td>`;
+      }
+    }
+    if (!build) h += `<td><button class="btn xs" data-act="addidea" data-si="${si}">+ Idea</button></td>`;
+    h += `</tr>`;
+  });
+  h += `</tbody></table></div><svg id="pathsvg"></svg></div>`;
+  return h;
+}
+function morphCards(build) {
+  const act = UI.active && cById(UI.active);
+  return `<div class="morph-cards">` + P.subfunctions.map((s, si) => {
+    let h = `<div class="mcard"><div class="sfn"><span class="pill">Row ${si + 1}</span>${build ? `<b>${esc(s.name)}</b>` : `<input class="inp" style="flex:1;font-weight:600" data-bind="subfunctions.${si}.name" data-fid="sf-${si}" value="${esc(s.name)}"><button class="ib-x" data-act="delsf" data-i="${si}" aria-label="Delete row">✕</button>`}</div><div class="ideas">`;
+    s.ideas.forEach((idea, ii) => {
+      const dots = P.concepts.filter(c => c.picks[si] === ii).map(c => `<span class="dot" style="background:${colorOf(c.id)}">${esc(c.id)}</span>`).join("");
+      if (build) {
+        const picked = act && act.picks[si] === ii;
+        h += `<div class="idea ${idea.x ? "out" : ""} ${picked ? "picked" : ""}" ${idea.x ? "" : `data-act="pick" data-si="${si}" data-ii="${ii}" role="button"`}><span class="itxt">${esc(idea.t || "(empty)")}</span><span class="dots">${dots}</span>${picked ? "✓" : ""}</div>`;
+      } else {
+        h += `<div class="idea ${idea.x ? "out" : ""}"><input data-bind="subfunctions.${si}.ideas.${ii}.t" data-fid="idea-${si}-${ii}" value="${esc(idea.t)}" placeholder="Idea ${ii + 1}"><span class="dots">${dots}</span><button class="ib-x" data-act="ruleout" data-si="${si}" data-ii="${ii}" title="Rule out / restore">${idea.x ? "↺" : "⊘"}</button><button class="ib-x" data-act="delidea" data-si="${si}" data-ii="${ii}" aria-label="Delete idea">✕</button></div>`;
+      }
+    });
+    if (!build) h += `<button class="btn sm" data-act="addidea" data-si="${si}">+ Add idea</button>`;
+    return h + `</div></div>`;
+  }).join("") + `</div>`;
+}
+function drawPaths() {
+  const svg = $("#pathsvg"), box = document.querySelector(".morphbox");
+  if (!svg || !box || UI.mode !== "build") { if (svg) svg.innerHTML = ""; return; }
+  const br = box.getBoundingClientRect();
+  svg.setAttribute("viewBox", `0 0 ${br.width} ${br.height}`);
+  let s = "";
+  P.concepts.forEach(c => {
+    const pts = [];
+    P.subfunctions.forEach((sf, si) => { const p = c.picks[si]; const el = p >= 0 && document.getElementById(`cell-${si}-${p}`); if (el) { const r = el.getBoundingClientRect(); pts.push([r.left - br.left + r.width / 2, r.top - br.top + r.height / 2]); } });
+    if (pts.length < 2) return;
+    const a = UI.active === c.id;
+    s += `<polyline points="${pts.map(p => p.join(",")).join(" ")}" fill="none" stroke="${colorOf(c.id)}" stroke-width="${a ? 4 : 2}" stroke-opacity="${a ? .9 : .35}" stroke-linecap="round" stroke-linejoin="round"/>`;
+  });
+  svg.innerHTML = s;
+}
+
+/* ---------------- C-BOX ---------------- */
+const CB = { W: 640, H: 500, l: 70, r: 16, t: 16, b: 60 };
+function vCbox() {
+  const a = P.cbox; const placed = P.concepts.filter(c => c.pos), un = P.concepts.filter(c => !c.pos);
+  let h = head("Filter", "The <em>C-box</em>", expBtns("cbox"));
+  h += how("How to use the C-box", [
+    "Choose <b>two important criteria</b> for the axes (e.g. creativity and feasibility).",
+    "<b>Place every concept</b> in one of the four boxes — drag the dots. Agree as a team.",
+    "Tap a box to mark it as the <b>keep</b> box (e.g. very creative &amp; easy).",
+    "Send the kept concepts on for proper evaluation. Others can be <b>modified</b> to move into the keep box."
+  ], "The C-box only filters a big pool. It never picks the final winner.");
+  h += `<div class="grid ${isM() ? "" : "g21"}" style="align-items:start"><div class="card">`;
+  if (un.length) h += `<div class="small mut" style="margin-bottom:6px">Not placed yet — tap to put in the box:</div><div class="cpick">${un.map(c => chip(c.id, true, "place")).join("")}</div>`;
+  h += `<div class="cboxwrap">${cboxSvg()}</div><div class="small mut" style="margin-top:6px">Drag dots to move them · tap a box to set it as the keep box.</div></div>`;
+  h += `<div class="grid" style="gap:14px"><div class="card"><h3>Axes</h3>
+    <div class="grid g3" style="gap:8px;grid-template-columns:1.2fr 1fr 1fr">
+      <label class="f">Across (→)<input class="inp" data-bind="cbox.xName" data-fid="cx" value="${esc(a.xName)}"></label><label class="f">left<input class="inp" data-bind="cbox.xLo" data-fid="cxl" value="${esc(a.xLo)}"></label><label class="f">right<input class="inp" data-bind="cbox.xHi" data-fid="cxh" value="${esc(a.xHi)}"></label>
+      <label class="f">Up (↑)<input class="inp" data-bind="cbox.yName" data-fid="cy" value="${esc(a.yName)}"></label><label class="f">bottom<input class="inp" data-bind="cbox.yLo" data-fid="cyl" value="${esc(a.yLo)}"></label><label class="f">top<input class="inp" data-bind="cbox.yHi" data-fid="cyh" value="${esc(a.yHi)}"></label>
+    </div></div>`;
+  const keep = keepIds();
+  h += `<div class="card"><h3>Keep box: ${keep.length} concept${keep.length === 1 ? "" : "s"}</h3>${keep.length ? keep.map(id => chip(id, true, "noop")).join(" ") : '<span class="mut small">Nothing in the keep box yet.</span>'}
+    <div class="row" style="margin-top:12px"><button class="btn sm acc" data-act="cb2datum" ${keep.length ? "" : "disabled"}>Send to datum method →</button></div></div>`;
+  if (placed.length) h += `<div class="card"><h3>Placed</h3><div class="row" style="gap:6px">${placed.map(c => `<span class="chip on" style="cursor:default"><b style="background:${colorOf(c.id)}">${esc(c.id)}</b>${quadName(c.pos)} <span data-act="unplace" data-id="${esc(c.id)}" style="cursor:pointer;color:var(--mut);padding:0 2px" role="button" aria-label="Remove">✕</span></span>`).join("")}</div></div>`;
+  h += `</div></div>`;
+  return h;
+}
+function quadOf(pos) { return (pos.y >= .5 ? "T" : "B") + (pos.x >= .5 ? "R" : "L"); }
+function quadName(pos) { const q = quadOf(pos), a = P.cbox; return `${q[0] === "T" ? a.yHi : a.yLo}, ${q[1] === "R" ? a.xHi : a.xLo}`; }
+function keepIds() { return P.concepts.filter(c => c.pos && quadOf(c.pos) === P.cbox.keep).map(c => c.id); }
+function cboxSvg(forExport) {
+  const { W, H, l, r, t, b } = CB, iw = W - l - r, ih = H - t - b, a = P.cbox;
+  const mob = isM() && !forExport, fs = mob ? 26 : 14, dr = mob ? 15 : 11;
+  let s = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" font-family="Inter" id="cbsvg">`;
+  [["TL", 0, 0], ["TR", 1, 0], ["BL", 0, 1], ["BR", 1, 1]].forEach(([k, cx, cy]) => {
+    s += `<rect class="q" data-q="${k}" x="${l + cx * iw / 2}" y="${t + cy * ih / 2}" width="${iw / 2}" height="${ih / 2}" fill="${k === a.keep ? "#FFF1D6" : "#fff"}" stroke="#D8CFBE" stroke-width="1.5"/>`;
+    if (k === a.keep) s += `<text x="${l + cx * iw / 2 + iw / 2 - 10}" y="${t + cy * ih / 2 + 22}" text-anchor="end" font-size="13" font-weight="700" fill="#B7791F" letter-spacing="1" pointer-events="none">KEEP</text>`;
+  });
+  s += `<g font-size="${mob ? 22 : 14}" fill="#6b665d" pointer-events="none"><text x="${l + iw / 4}" y="${H - 32}" text-anchor="middle">${esc(a.xLo)}</text><text x="${l + iw * 3 / 4}" y="${H - 32}" text-anchor="middle">${esc(a.xHi)}</text>
+    <text transform="translate(${l - 14},${t + ih * 3 / 4}) rotate(-90)" text-anchor="middle">${esc(a.yLo)}</text><text transform="translate(${l - 14},${t + ih / 4}) rotate(-90)" text-anchor="middle">${esc(a.yHi)}</text></g>
+    <g font-size="${mob ? 22 : 15}" font-weight="700" fill="#1d1b18" pointer-events="none"><text x="${l + iw / 2}" y="${H - 8}" text-anchor="middle">${esc(a.xName)} →</text><text transform="translate(${l - 44},${t + ih / 2}) rotate(-90)" text-anchor="middle">${esc(a.yName)} →</text></g>`;
+  P.concepts.forEach(c => {
+    if (!c.pos) return;
+    const x = l + c.pos.x * iw, y = t + (1 - c.pos.y) * ih, left = c.pos.x > .62;
+    s += `<g class="pt" data-id="${esc(c.id)}" transform="translate(${x},${y})"><circle r="${mob ? 34 : 22}" fill="transparent"/><circle r="${dr}" fill="${colorOf(c.id)}" stroke="#fff" stroke-width="2"/><text x="${left ? -(dr + 6) : dr + 6}" y="${fs * .35}" text-anchor="${left ? "end" : "start"}" font-size="${fs}" font-weight="700" fill="#1d1b18" paint-order="stroke" stroke="#fff" stroke-width="4">${esc(c.id)}${mob ? "" : " " + esc(c.name !== c.id ? c.name : "")}</text></g>`;
+  });
+  return s + `</svg>`;
+}
+function bindCbox() {
+  const svg = $("#cbsvg"); if (!svg) return;
+  const { W, H, l, r, t, b } = CB, iw = W - l - r, ih = H - t - b;
+  let drag = null, moved = false;
+  const toSvg = e => { const pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY; return pt.matrixTransform(svg.getScreenCTM().inverse()); };
+  svg.addEventListener("pointerdown", e => {
+    const g = e.target.closest(".pt");
+    if (g) { drag = g; moved = false; g.setPointerCapture(e.pointerId); e.preventDefault(); }
+  });
+  svg.addEventListener("pointermove", e => {
+    if (!drag) return; moved = true;
+    const p = toSvg(e); const x = Math.min(l + iw, Math.max(l, p.x)), y = Math.min(t + ih, Math.max(t, p.y));
+    drag.setAttribute("transform", `translate(${x},${y})`);
+    const c = cById(drag.dataset.id); c.pos = { x: (x - l) / iw, y: 1 - (y - t) / ih };
+  });
+  const end = () => { if (drag) { drag = null; save(); if (moved) render(); } };
+  svg.addEventListener("pointerup", end); svg.addEventListener("pointercancel", end);
+  svg.addEventListener("click", e => { const q = e.target.closest(".q"); if (q && !moved) { P.cbox.keep = q.dataset.q; save(); render(); } moved = false; });
+}
+
+/* ---------------- WEIGHTS ---------------- */
+function vWeights() {
+  const ws = P.criteria.map(c => Number(c.w) || 0), tot = sum(ws), m = P.weighting.method;
+  let h = head("Prepare", "Criteria &amp; <em>weights</em>", expBtns("weights"));
+  h += how("How to choose criteria and weights", [
+    "Take criteria from the <b>list of needs</b>. Make them comprehensive and <b>independent</b> (no need written twice).",
+    "Weight = importance. Weights should add up to <b>100 %</b>.",
+    "<b>Matrix method:</b> compare criteria two at a time, count wins, add 1, divide by the total.",
+    "<b>Objectives tree:</b> weight groups, weight criteria inside each group, multiply down.",
+    "<b>Demands</b> (must-haves) are pass/fail — leave them out of the weights. Reassess weights when new needs appear."
+  ]);
+  h += `<div class="grid ${isM() ? "" : "g2"}" style="align-items:start"><div class="card"><div class="row" style="justify-content:space-between;margin-bottom:10px"><h3 style="margin:0">Criteria</h3>
+      <span class="pill ${Math.abs(tot - 100) < .01 ? "ok" : "warn"}">Total ${C.round(tot, 1)} %</span></div><div class="mlist">`;
+  P.criteria.forEach((c, i) => {
+    h += `<div class="row" style="flex-wrap:nowrap"><input class="inp" style="flex:1" data-bind="criteria.${i}.name" data-fid="crn-${i}" value="${esc(c.name)}" aria-label="Criterion name">
+      <input class="inp n" type="number" inputmode="decimal" min="0" step="1" data-bind="criteria.${i}.w" data-num="1" data-fid="crw-${i}" value="${c.w}" aria-label="Weight %"><span class="mut">%</span>
+      <button class="btn xs ghost" data-act="delcrit" data-i="${i}" aria-label="Delete criterion">✕</button></div>
+      <div class="bar" style="margin-top:-6px"><i style="width:${tot ? Math.min(100, (Number(c.w) || 0) / tot * 100) : 0}%"></i></div>`;
+  });
+  h += `</div><div class="row" style="margin-top:12px"><button class="btn sm" data-act="addcrit">+ Add criterion</button>${Math.abs(tot - 100) > .01 && tot > 0 ? `<button class="btn sm acc" data-act="normw">Scale to 100 %</button>` : ""}</div></div>`;
+  h += `<div class="card"><div class="row" style="justify-content:space-between;margin-bottom:12px"><h3 style="margin:0">Find weights with…</h3>
+    <div class="seg"><button class="${m === "direct" ? "on" : ""}" data-act="wmeth" data-id="direct">Direct</button><button class="${m === "matrix" ? "on" : ""}" data-act="wmeth" data-id="matrix">Matrix</button><button class="${m === "tree" ? "on" : ""}" data-act="wmeth" data-id="tree">Tree</button></div></div>`;
+  if (m === "direct") h += `<p class="mut" style="margin:0">Type weights directly in the list. Use this when the team already agrees on the importance of each criterion.</p>`;
+  if (m === "matrix") h += weightMatrix();
+  if (m === "tree") h += weightTree();
+  h += `</div></div>`;
+  return h;
+}
+function weightMatrix() {
+  const n = P.criteria.length, M = P.weighting.matrix, R = C.matrixWeights(n, M);
+  if (n < 2) return `<p class="mut">Add at least two criteria.</p>`;
+  let h = `<p class="small mut" style="margin-top:0">For each pair: which criterion is <b>more important</b>?</p>`;
+  if (isM()) {
+    h += `<div class="mlist">`;
+    for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) {
+      const v = M[i + "|" + j];
+      h += `<div class="mrow"><div class="segc" style="width:100%"><button style="flex:1" class="${v === 1 ? "on" : ""}" data-act="wm" data-k="${i}|${j}" data-v="1">${esc(P.criteria[i].name)}</button><button class="${v === .5 ? "on" : ""}" data-act="wm" data-k="${i}|${j}" data-v="0.5">=</button><button style="flex:1" class="${v === 0 ? "on" : ""}" data-act="wm" data-k="${i}|${j}" data-v="0">${esc(P.criteria[j].name)}</button></div></div>`;
+    }
+    h += `</div>`;
+  } else {
+    h += `<div class="tblwrap"><table class="t"><thead><tr><th class="l">Row vs column</th>${P.criteria.map((c, j) => `<th title="${esc(c.name)}">${esc(short(c.name))}</th>`).join("")}<th class="tot">Wins</th><th class="tot">+1</th><th class="tot">Weight</th></tr></thead><tbody>`;
+    for (let i = 0; i < n; i++) {
+      h += `<tr><td class="crit">${esc(P.criteria[i].name)}</td>`;
+      for (let j = 0; j < n; j++) {
+        if (i === j) { h += `<td class="diag">–</td>`; continue; }
+        if (j > i) { const v = M[i + "|" + j]; h += `<td class="${v === 1 ? "pos" : ""}"><select class="cell" data-act-change="wm" data-k="${i}|${j}" aria-label="Row vs column"><option value="" ${v === undefined ? "selected" : ""}>·</option><option value="1" ${v === 1 ? "selected" : ""}>1</option><option value="0.5" ${v === .5 ? "selected" : ""}>½</option><option value="0" ${v === 0 ? "selected" : ""}>0</option></select></td>`; }
+        else { const v = M[j + "|" + i]; h += `<td class="mirror">${v === undefined ? "·" : v === .5 ? "½" : 1 - v}</td>`; }
+      }
+      h += `<td class="tot">${R.wins[i]}</td><td class="tot">${R.pts[i]}</td><td class="tot">${C.round(R.w[i], 1)} %</td></tr>`;
+    }
+    h += `</tbody></table></div><p class="small mut">1 = row more important · ½ = equal · 0 = column more important. The lower half fills itself.</p>`;
+  }
+  if (isM()) h += `<div class="sumgrid" style="margin-top:10px">${P.criteria.map((c, i) => `<div class="sumcell"><div class="k">${esc(short(c.name))}</div><div class="v">${C.round(R.w[i], 1)}%</div></div>`).join("")}</div>`;
+  const done = Object.keys(M).length >= n * (n - 1) / 2;
+  h += `<div class="row" style="margin-top:12px"><button class="btn sm acc" data-act="usewm" ${done ? "" : "disabled"}>Use these weights</button>${done ? "" : `<span class="small mut">${n * (n - 1) / 2 - Object.keys(M).length} pair(s) left</span>`}</div>`;
+  return h;
+}
+function weightTree() {
+  const T = P.weighting.tree; while (T.local.length < P.criteria.length) T.local.push({ g: 0, w: 50 });
+  const gw = sum(T.groups.map(g => g.w)), glob = C.treeWeights(T);
+  let h = `<div class="sect" style="margin-top:0">Level 1 · groups <span class="pill ${Math.abs(gw - 100) < .01 ? "ok" : "warn"}">${gw} %</span></div><div class="mlist">`;
+  T.groups.forEach((g, i) => h += `<div class="row" style="flex-wrap:nowrap"><input class="inp" style="flex:1" data-bind="weighting.tree.groups.${i}.name" data-fid="tg-${i}" value="${esc(g.name)}"><input class="inp n" type="number" inputmode="decimal" data-num="1" data-bind="weighting.tree.groups.${i}.w" data-fid="tgw-${i}" value="${g.w}"><span class="mut">%</span><button class="btn xs ghost" data-act="delgrp" data-i="${i}">✕</button></div>`);
+  h += `</div><button class="btn xs" style="margin-top:8px" data-act="addgrp">+ Group</button>`;
+  h += `<div class="sect" style="margin-top:16px">Level 2 · criteria (local % inside each group)</div><div class="mlist">`;
+  P.criteria.forEach((c, i) => {
+    const l = T.local[i];
+    h += `<div class="mrow" style="padding:10px"><div class="h"><span>${esc(c.name)}</span><span class="w">global ${C.round(glob[i], 1)} %</span></div><div class="row" style="flex-wrap:nowrap"><select class="inp" style="flex:1" data-bind="weighting.tree.local.${i}.g" data-num="1">${T.groups.map((g, gi) => `<option value="${gi}" ${l.g === gi ? "selected" : ""}>${esc(g.name)}</option>`).join("")}</select><input class="inp n" type="number" inputmode="decimal" data-num="1" data-bind="weighting.tree.local.${i}.w" data-fid="tl-${i}" value="${l.w}"><span class="mut">%</span></div></div>`;
+  });
+  h += `</div>`;
+  const bad = T.groups.map((g, gi) => sum(P.criteria.map((c, i) => T.local[i].g === gi ? T.local[i].w : 0))).map((s, gi) => ({ s, gi })).filter(x => P.criteria.some((c, i) => T.local[i].g === x.gi) && Math.abs(x.s - 100) > .01);
+  if (bad.length) h += `<div class="note warn" style="margin-top:10px">Local weights inside ${bad.map(b => `<b>${esc(T.groups[b.gi].name)}</b> (${b.s} %)`).join(", ")} should add to 100 %.</div>`;
+  h += `<div class="note info" style="margin-top:10px">Global = group × local. Sum of global weights: <b>${C.round(sum(glob), 1)} %</b></div><div class="row" style="margin-top:12px"><button class="btn sm acc" data-act="usetree">Use these weights</button></div>`;
+  return h;
+}
+const short = s => s.length > 14 ? s.slice(0, 13) + "…" : s;
+
+/* ---------------- DATUM ---------------- */
+function vDatum() {
+  const s = P.screening, n = P.criteria.length;
+  const sc = s.scale === 5 ? [2, 1, 0, -1, -2] : [1, 0, -1];
+  if (s.datum && !cById(s.datum)) s.datum = null;
+  s.include = s.include.filter(id => cById(id) && id !== s.datum);
+  const rows = C.screening(P);
+  let h = head("Screen", "Datum <em>method</em>", expBtns("datum"));
+  h += how("How to use the datum method", [
+    "Pick a <b>datum</b> (benchmark): an existing product or one of your concepts. It scores 0 everywhere.",
+    "Compare every concept with the datum on each criterion: <b>better (+)</b>, <b>same (0)</b> or <b>worse (−)</b>. On the 5-level scale use ++ and −−.",
+    "Totals: Σ+ (++ counts 2), Σ−, net = Σ+ − Σ−. Rank by net.",
+    "Decide which concepts <b>continue</b>. Break ties by team judgement. Combine good features into new concepts.",
+    "Iterate if needed — e.g. make the winner the new datum and repeat."
+  ], "Rate in consensus with your whole team.");
+  if (!n) return h + `<div class="note warn">Add criteria first in <b>Criteria &amp; weights</b>.</div>`;
+  h += `<div class="card" style="margin-bottom:14px"><div class="grid ${isM() ? "" : "g3"}" style="gap:12px;grid-template-columns:${isM() ? "1fr" : "1fr 1fr 2fr"}">
+    <label class="f">Datum (benchmark)<select class="inp" data-bind="screening.datum">${P.concepts.map(c => `<option value="${esc(c.id)}" ${c.id === s.datum ? "selected" : ""}>${esc(c.id)} · ${esc(c.name)}</option>`).join("")}</select></label>
+    <label class="f">Scale<div class="seg"><button class="${s.scale === 3 ? "on" : ""}" data-act="dscale" data-v="3">+ 0 −</button><button class="${s.scale === 5 ? "on" : ""}" data-act="dscale" data-v="5">++ … −−</button></div></label>
+    <div class="f" style="font-size:12.5px;font-weight:600;color:var(--mut)">Concepts in the matrix (tap to add/remove)<div class="cpick">${P.concepts.filter(c => c.id !== s.datum).map(c => chip(c.id, s.include.includes(c.id), "dinc")).join("")}</div></div>
+  </div></div>`;
+  if (!s.include.length) return h + `<div class="note warn">Choose at least one concept to compare.</div>`;
+  if (isM()) {
+    let sel = UI.sel.datum; if (!s.include.includes(sel)) sel = UI.sel.datum = s.include[0];
+    const r = rows.find(x => x.id === sel);
+    h += `<div class="stick"><div class="cpick">${s.include.map(id => { const rr = rows.find(x => x.id === id); return chip(id, id === sel, "dsel", "") ; }).join("")}</div></div>`;
+    h += `<div class="mlist">${P.criteria.map((c, i) => { const v = r.r[i]; return `<div class="mrow"><div class="h"><span>${esc(c.name)}</span><span class="w">vs ${esc(s.datum)}</span></div><div class="segc">${sc.map(x => `<button class="${v === x ? "on " + (x > 0 ? "p" : x < 0 ? "m" : "z") : ""}" data-act="dset" data-id="${esc(sel)}" data-i="${i}" data-v="${x}">${C.sym(x)}</button>`).join("")}</div></div>`; }).join("")}</div>`;
+    h += `<div class="sumgrid" style="margin-top:10px"><div class="sumcell"><div class="k">Σ+</div><div class="v">${r.plus}</div></div><div class="sumcell"><div class="k">Σ−</div><div class="v">${r.minus}</div></div><div class="sumcell"><div class="k">Net</div><div class="v">${C.signed(r.net)}</div></div><div class="sumcell"><div class="k">Rank</div><div class="v">${r.rank}${r.tie ? "=" : ""}</div></div></div>`;
+    h += `<div class="card" style="margin-top:14px"><h3>All concepts</h3>${screenSummary(rows)}</div>`;
+  } else {
+    h += `<div class="tblwrap"><table class="t"><thead><tr><th class="l">Criteria</th><th class="datum">Datum<span class="s">${esc(s.datum)} · ${esc(cname(s.datum))}</span></th>${rows.map(r => `<th><span style="color:${colorOf(r.id)}">${esc(r.id)}</span><span class="s">${esc(cname(r.id) !== r.id ? cname(r.id) : "")}</span></th>`).join("")}</tr></thead><tbody>`;
+    P.criteria.forEach((c, i) => {
+      h += `<tr><td class="crit">${esc(c.name)}</td><td class="datum">0</td>${rows.map(r => { const v = r.r[i]; return `<td class="${v > 0 ? "pos" : v < 0 ? "neg" : ""}"><select class="cell" data-act-change="dsetsel" data-id="${esc(r.id)}" data-i="${i}" aria-label="${esc(r.id)} ${esc(c.name)}"><option value="" ${v == null ? "selected" : ""}>·</option>${sc.map(x => `<option value="${x}" ${v === x ? "selected" : ""}>${C.sym(x)}</option>`).join("")}</select></td>`; }).join("")}</tr>`;
+    });
+    const sr = (lab, f, cls = "") => `<tr class="sum ${cls}"><td class="crit">${lab}</td><td class="datum">0</td>${rows.map(r => `<td>${f(r)}</td>`).join("")}</tr>`;
+    h += sr("Plusses Σ+", r => r.plus, "first") + (s.scale === 3 ? sr("Sames (0)", r => r.same) : "") + sr("Minuses Σ−", r => r.minus) + sr("Net score", r => C.signed(r.net), "net") + sr("Rank", r => r.rank + (r.tie ? "=" : ""));
+    h += `<tr class="sum"><td class="crit">Continue?</td><td class="datum"></td>${rows.map(r => `<td><button class="btn xs ${s.cont[r.id] ? "acc" : ""}" style="${s.cont[r.id] ? "--c:#1F7A35" : ""}" data-act="dcont" data-id="${esc(r.id)}">${s.cont[r.id] ? "Yes" : "No"}</button></td>`).join("")}</tr>`;
+    h += `</tbody></table></div>`;
+  }
+  const empty = rows.reduce((a, r) => a + r.r.filter(v => v == null).length, 0);
+  const ties = [...new Set(rows.filter(r => r.tie).map(r => r.net))];
+  h += `<div class="grid ${isM() ? "" : "g2"}" style="margin-top:14px">`;
+  h += `<div class="grid" style="gap:10px">${empty ? `<div class="note warn">${empty} cell${empty > 1 ? "s" : ""} not rated yet (shown as ·).</div>` : `<div class="note ok">All cells rated. Best net score: <b>${rows.slice().sort((a, b) => b.net - a.net)[0].id}</b>.</div>`}
+    ${ties.length ? `<div class="note info">Tie on net ${ties.map(C.signed).join(", ")}. Break ties as a team — look at <i>which</i> criteria are + and −.</div>` : ""}
+    <div class="row"><button class="btn sm acc" data-act="d2score">Send “Yes” concepts to weighted matrix →</button><button class="btn sm" data-act="d2pair">Send to pairwise</button></div></div>`;
+  h += combineBox();
+  h += `</div>`;
+  return h;
+}
+function screenSummary(rows) {
+  const s = P.screening;
+  return `<div class="tblwrap"><table class="t"><thead><tr><th class="l">Concept</th><th>Σ+</th><th>Σ−</th><th>Net</th><th>Rank</th><th>Continue?</th></tr></thead><tbody>${rows.map(r => `<tr><td class="l"><b style="color:${colorOf(r.id)}">${esc(r.id)}</b> ${esc(cname(r.id) !== r.id ? cname(r.id) : "")}</td><td>${r.plus}</td><td>${r.minus}</td><td><b>${C.signed(r.net)}</b></td><td>${r.rank}${r.tie ? "=" : ""}</td><td><button class="btn xs ${s.cont[r.id] ? "acc" : ""}" style="${s.cont[r.id] ? "--c:#1F7A35" : ""}" data-act="dcont" data-id="${esc(r.id)}">${s.cont[r.id] ? "Yes" : "No"}</button></td></tr>`).join("")}</tbody></table></div>`;
+}
+function combineBox() {
+  const opts = P.concepts.map(c => `<option value="${esc(c.id)}">${esc(c.id)} · ${esc(c.name)}</option>`).join("");
+  return `<div class="card"><h3>Combine &amp; improve</h3><p class="small mut" style="margin-top:0">Mix good features from two concepts into a new one (like D + F → DF in the syringe case).</p>
+    <div class="row" style="flex-wrap:nowrap"><select class="inp" id="cmbA" style="flex:1">${opts}</select><span class="mut">+</span><select class="inp" id="cmbB" style="flex:1">${P.concepts.map((c, i) => `<option value="${esc(c.id)}" ${i === 1 ? "selected" : ""}>${esc(c.id)} · ${esc(c.name)}</option>`).join("")}</select></div>
+    <div class="row" style="margin-top:8px;flex-wrap:nowrap"><input class="inp" id="cmbN" style="flex:1" placeholder="Name of combined concept"><button class="btn sm acc" data-act="combine">Create</button></div></div>`;
+}
+
+/* ---------------- PAIRWISE ---------------- */
+function vPair() {
+  const p = P.pairwise;
+  p.include = p.include.filter(id => cById(id));
+  p.crit = p.crit.filter(i => i < P.criteria.length);
+  while (p.weights.length < p.crit.length) p.weights.push(10);
+  let h = head("Screen", "Pairwise <em>comparison</em>", expBtns("pair"));
+  h += how("How to do a pairwise comparison", [
+    "Choose the concepts and the criteria to compare.",
+    "For <b>each criterion</b>, compare every pair, read as <b>row vs column</b>: superior <b>+1</b>, inferior <b>−1</b>, equal <b>0</b>.",
+    "The mirror cell fills itself (if S1 vs S2 = −1, then S2 vs S1 = +1).",
+    "Add each row → the concept's score for that criterion. Check: all row sums add up to 0.",
+    "Multiply each criterion's sums by its weight and add up → weighted total."
+  ]);
+  if (!P.criteria.length) return h + `<div class="note warn">Add criteria first.</div>`;
+  h += `<div class="card" style="margin-bottom:14px"><div class="grid ${isM() ? "" : "g2"}" style="gap:12px">
+    <div><div class="sect">Concepts</div><div class="cpick">${P.concepts.map(c => chip(c.id, p.include.includes(c.id), "pinc")).join("")}</div></div>
+    <div><div class="sect">Criteria and their weight</div><div class="cpick">${P.criteria.map((c, i) => `<button class="chip ${p.crit.includes(i) ? "on" : "off"}" data-act="pcrit" data-i="${i}"><b style="background:var(--pair)">${i + 1}</b>${esc(c.name)}</button>`).join("")}</div>
+      <div class="row" style="gap:8px;margin-top:4px">${p.crit.map((ci, k) => `<label class="small" style="display:flex;gap:4px;align-items:center">${esc(short(P.criteria[ci].name))}<input class="inp n" style="width:64px" type="number" inputmode="decimal" data-num="1" data-bind="pairwise.weights.${k}" data-fid="pw-${k}" value="${p.weights[k]}"></label>`).join("")}</div></div>
+  </div></div>`;
+  if (p.include.length < 2 || !p.crit.length) return h + `<div class="note warn">Choose at least two concepts and one criterion.</div>`;
+  if (UI.pwCrit >= p.crit.length) UI.pwCrit = 0;
+  const k = UI.pwCrit, ci = p.crit[k];
+  const pc = C.pairwiseCrit(P, ci);
+  h += `<div class="stick"><div class="cpick">${p.crit.map((c, kk) => `<button class="chip ${kk === k ? "on" : ""}" data-act="pctab" data-i="${kk}"><b style="background:var(--pair)">${kk + 1}</b>${esc(P.criteria[c].name)} ${C.pairwiseCrit(P, c).complete ? "✓" : ""}</button>`).join("")}</div></div>`;
+  h += `<div class="grid ${isM() ? "" : "g21"}" style="align-items:start"><div class="card"><h3>${esc(P.criteria[ci].name)} — row vs column</h3>`;
+  const ids = pc.ids;
+  if (isM()) {
+    h += `<div class="mlist">`;
+    for (let i = 0; i < ids.length; i++) for (let j = i + 1; j < ids.length; j++) {
+      const v = pc.m[i][j];
+      h += `<div class="mrow"><div class="h"><span>${esc(ids[i])} vs ${esc(ids[j])}</span></div><div class="segc" style="width:100%"><button style="flex:1" class="${v === 1 ? "on p" : ""}" data-act="pset" data-a="${esc(ids[i])}" data-b="${esc(ids[j])}" data-v="1">${esc(ids[i])} better</button><button class="${v === 0 ? "on z" : ""}" data-act="pset" data-a="${esc(ids[i])}" data-b="${esc(ids[j])}" data-v="0">Equal</button><button style="flex:1" class="${v === -1 ? "on p" : ""}" data-act="pset" data-a="${esc(ids[i])}" data-b="${esc(ids[j])}" data-v="-1">${esc(ids[j])} better</button></div></div>`;
+    }
+    h += `</div>`;
+  }
+  h += `<div class="tblwrap" style="${isM() ? "margin-top:12px" : ""}"><table class="t"><thead><tr><th>row vs col</th>${ids.map(id => `<th style="color:${colorOf(id)}">${esc(id)}</th>`).join("")}<th class="tot">Σ</th></tr></thead><tbody>`;
+  ids.forEach((a, i) => {
+    h += `<tr><th style="background:var(--soft);color:${colorOf(a)}">${esc(a)}</th>` + ids.map((b, j) => {
+      if (i === j) return `<td class="diag">–</td>`;
+      const v = pc.m[i][j];
+      if (j > i && !isM()) return `<td class="${v > 0 ? "pos" : v < 0 ? "neg" : ""}"><select class="cell" data-act-change="psetsel" data-a="${esc(a)}" data-b="${esc(b)}" aria-label="${esc(a)} vs ${esc(b)}"><option value="" ${v === undefined ? "selected" : ""}>·</option><option value="1" ${v === 1 ? "selected" : ""}>+1</option><option value="0" ${v === 0 ? "selected" : ""}>0</option><option value="-1" ${v === -1 ? "selected" : ""}>−1</option></select></td>`;
+      return `<td class="${j < i ? "mirror" : ""} ${v > 0 ? "pos" : v < 0 ? "neg" : ""}">${v === undefined ? "·" : C.signed(v)}</td>`;
+    }).join("") + `<td class="tot">${C.signed(pc.sums[i])}</td></tr>`;
+  });
+  h += `</tbody></table></div>`;
+  const zs = sum(pc.sums);
+  h += `<div class="row" style="margin-top:10px">${pc.complete ? `<span class="pill ok">complete</span>` : `<span class="pill warn">some pairs empty</span>`} <span class="pill ${zs === 0 ? "ok" : "bad"}">zero check: Σ = ${zs}</span></div></div>`;
+  const R = C.pairwise(P);
+  h += `<div class="card"><h3>Weighted totals</h3><div class="tblwrap"><table class="t"><thead><tr><th class="l">Concept</th>${p.crit.map((c, kk) => `<th>${esc(short(P.criteria[c].name))}<span class="s">× ${C.f2(R.ws[kk])}</span></th>`).join("")}<th class="tot">Total</th><th>Rank</th></tr></thead><tbody>${p.include.map((id, i) => `<tr><td class="l"><b style="color:${colorOf(id)}">${esc(id)}</b></td>${R.per.map(x => `<td>${C.signed(x.sums[i])}</td>`).join("")}<td class="tot">${C.f2(R.totals[i])}</td><td>${R.ranks[i]}</td></tr>`).join("")}</tbody></table></div>
+    <p class="small mut" style="margin-bottom:0">Total = Σ (weight × row sum). Weights are scaled so they add up to 1.</p></div></div>`;
+  return h;
+}
+
+/* ---------------- SCORING ---------------- */
+function vScore() {
+  const s = P.scoring, sc = SCALES[s.scale];
+  s.include = s.include.filter(id => cById(id));
+  if (s.ref && !cById(s.ref)) s.ref = null;
+  let h = head("Score", "Weighted <em>evaluation matrix</em>", expBtns("score"));
+  h += how("How to score concepts", [
+    "Use the criteria and <b>weights</b> from step 3 (weights add to 100 %).",
+    "Choose a reference concept and a rating scale. On 1–5, <b>3 = same as reference</b>.",
+    "Rate every concept on every criterion.",
+    "Weighted value = weight × rating. Overall value = Σ weighted values. Highest ranks first.",
+    "Before deciding: combine and improve; beware of the “best average” concept; check each stakeholder's weights."
+  ]);
+  if (!P.criteria.length) return h + `<div class="note warn">Add criteria first.</div>`;
+  const tot = sum(P.criteria.map(c => c.w));
+  h += `<div class="card" style="margin-bottom:14px"><div class="grid ${isM() ? "" : "g3"}" style="gap:12px;grid-template-columns:${isM() ? "1fr" : "1fr 1.2fr 2fr"}">
+    <label class="f">Reference concept<select class="inp" data-bind="scoring.ref"><option value="">(none)</option>${s.include.map(id => `<option value="${esc(id)}" ${id === s.ref ? "selected" : ""}>${esc(id)} · ${esc(cname(id))}</option>`).join("")}</select></label>
+    <label class="f">Rating scale<div class="seg">${Object.keys(SCALES).map(k => `<button class="${s.scale === k ? "on" : ""}" data-act="sscale" data-v="${k}">${k}</button>`).join("")}</div></label>
+    <div class="f" style="font-size:12.5px;font-weight:600;color:var(--mut)">Concepts (tap to add/remove)<div class="cpick">${P.concepts.map(c => chip(c.id, s.include.includes(c.id), "sinc")).join("")}</div></div></div>
+    <details style="margin-top:6px"><summary class="small" style="cursor:pointer;font-weight:600">What do the numbers mean?</summary><div class="small mut" style="margin-top:6px">${SCALE_TXT[s.scale].join(" · ")}</div></details>
+    ${Math.abs(tot - 100) > .01 ? `<div class="note warn" style="margin-top:8px">Weights add up to ${C.round(tot, 1)} %, not 100 %. Results are scaled automatically, but fix this in step 3.</div>` : ""}</div>`;
+  if (!s.include.length) return h + `<div class="note warn">Choose concepts to score.</div>`;
+  const R = C.scoring(P);
+  if (isM()) {
+    let sel = UI.sel.score; if (!s.include.includes(sel)) sel = UI.sel.score = s.include[0];
+    const row = R.rows.find(x => x.id === sel);
+    h += `<div class="stick"><div class="cpick">${s.include.map(id => chip(id, id === sel, "ssel")).join("")}</div></div>`;
+    h += `<div class="mlist">${P.criteria.map((c, i) => { const v = row.r[i]; return `<div class="mrow"><div class="h"><span>${esc(c.name)}</span><span class="w">w ${c.w}% ${v != null && v !== "" ? `→ ${C.f2(row.ws[i])}` : ""}</span></div><div class="segc">${sc.map(x => `<button class="${Number(v) === x && v !== null && v !== "" ? "on" : ""}" data-act="sset" data-id="${esc(sel)}" data-i="${i}" data-v="${x}">${x}</button>`).join("")}</div></div>`; }).join("")}</div>`;
+    h += `<div class="sumgrid" style="margin-top:10px"><div class="sumcell"><div class="k">Total</div><div class="v">${C.f2(row.total)}</div></div><div class="sumcell"><div class="k">Rank</div><div class="v">${row.rank}</div></div></div>`;
+  } else {
+    h += `<div class="row" style="justify-content:flex-end;margin-bottom:6px"><label class="small" style="display:flex;gap:6px;align-items:center"><input type="checkbox" data-act-change="work" ${UI.showWork ? "checked" : ""}> show working (w × rating)</label></div>`;
+    h += `<div class="tblwrap"><table class="t"><thead><tr><th class="l" rowspan="2">Criteria</th><th rowspan="2">Weight</th>${R.rows.map(r => `<th colspan="2"><span style="color:${colorOf(r.id)}">${esc(r.id)}</span>${r.id === s.ref ? " <span class='s' style='display:inline'>(ref.)</span>" : ""}<span class="s">${esc(cname(r.id) !== r.id ? cname(r.id) : "")}</span></th>`).join("")}</tr><tr>${R.rows.map(() => `<th><span class="s">Rating</span></th><th><span class="s">Weighted</span></th>`).join("")}</tr></thead><tbody>`;
+    P.criteria.forEach((c, i) => {
+      h += `<tr><td class="crit">${esc(c.name)}</td><td class="mono">${c.w}%</td>${R.rows.map(r => { const v = r.r[i]; return `<td style="background:#F2F8FF"><select class="cell" data-act-change="ssetsel" data-id="${esc(r.id)}" data-i="${i}" aria-label="${esc(r.id)} ${esc(c.name)}"><option value="" ${v == null || v === "" ? "selected" : ""}>·</option>${sc.map(x => `<option value="${x}" ${Number(v) === x && v !== null && v !== "" ? "selected" : ""}>${x}</option>`).join("")}</select></td><td class="mut">${r.ws[i] == null ? "" : UI.showWork ? `<span class="small">${C.f2(R.wf[i])}×${v}=</span>${C.f2(r.ws[i])}` : C.f2(r.ws[i])}</td>`; }).join("")}</tr>`;
+    });
+    h += `<tr class="sum first"><td class="crit" colspan="2">Total score</td>${R.rows.map(r => `<td colspan="2"><b>${C.f2(r.total)}</b></td>`).join("")}</tr><tr class="sum"><td class="crit" colspan="2">Rank</td>${R.rows.map(r => `<td colspan="2">${r.rank}</td>`).join("")}</tr>`;
+    h += `<tr class="sum"><td class="crit" colspan="2">Continue?</td>${R.rows.map(r => `<td colspan="2"><select class="inp" style="padding:4px 6px;font-size:13px" data-bind="scoring.cont.${r.id}">${["", "Develop", "Combine", "Revise", "No"].map(o => `<option ${s.cont[r.id] === o ? "selected" : ""} value="${o}">${o || "—"}</option>`).join("")}</select></td>`).join("")}</tr></tbody></table></div>`;
+  }
+  /* results */
+  const sorted = R.rows.slice().sort((a, b) => b.total - a.total);
+  const maxT = Math.max(...SCALES[s.scale]);
+  h += `<div class="grid ${isM() ? "" : "g2"}" style="margin-top:14px;align-items:start"><div class="card"><h3>Ranking &amp; strength profile</h3><div class="mlist">${sorted.map(r => `<div><div class="row" style="justify-content:space-between"><span><b style="color:${colorOf(r.id)}">${r.rank}. ${esc(r.id)}</b> <span class="small mut">${esc(cname(r.id) !== r.id ? cname(r.id) : "")}</span></span><b class="mono">${C.f2(r.total)}</b></div>
+    <div class="row" style="flex-wrap:nowrap;gap:12px"><div class="bar" style="flex:1"><i style="width:${r.total / maxT * 100}%;background:${colorOf(r.id)}"></i></div><div class="spark" title="Rating per criterion">${r.r.map(v => `<i style="height:${v == null || v === "" ? 2 : Math.max(2, Number(v) / maxT * 30)}px;background:${colorOf(r.id)}"></i>`).join("")}</div></div></div>`).join("")}</div>`;
+  const win = sorted[0], filledAll = R.rows.every(r => r.filled);
+  if (filledAll && sorted.length > 1) {
+    const wr = win.r.map(Number), spread = Math.max(...wr) - Math.min(...wr);
+    const specialist = sorted.slice(1).find(r => r.r.some(v => Number(v) === maxT) && !wr.includes(maxT));
+    if (spread <= 1 && specialist) h += `<div class="note warn" style="margin-top:12px"><b>Best-average alert:</b> ${esc(win.id)} wins by being OK at everything. ${esc(specialist.id)} has a top rating somewhere — could borrowing a feature fix its weak spots?</div>`;
+    else h += `<div class="note ok" style="margin-top:12px"><b>${esc(win.id)}</b> leads with ${C.f2(win.total)}. Before deciding, check other stakeholders below.</div>`;
+  }
+  h += `</div>` + stakeholders(R) + `</div>`;
+  h += `<div style="margin-top:14px">${combineBox()}</div>`;
+  return h;
+}
+function stakeholders(R) {
+  const s = P.scoring;
+  let h = `<div class="card"><div class="row" style="justify-content:space-between;margin-bottom:8px"><h3 style="margin:0">Stakeholder groups</h3><button class="btn xs" data-act="addprof">+ Group</button></div>
+    <p class="small mut" style="margin-top:0">Same ratings, different weights. Compare winners for users, buyers, makers…</p>`;
+  if (s.profiles.length) {
+    h += `<div class="tblwrap"><table class="t"><thead><tr><th class="l">Criterion</th><th>Team</th>${s.profiles.map((p, k) => `<th><input class="inp" style="padding:3px 6px;font-size:12.5px;width:110px" data-bind="scoring.profiles.${k}.name" data-fid="pfn-${k}" value="${esc(p.name)}"><button class="btn xs ghost" data-act="delprof" data-i="${k}">✕</button></th>`).join("")}</tr></thead><tbody>`;
+    P.criteria.forEach((c, i) => h += `<tr><td class="crit">${esc(short(c.name))}</td><td class="mono">${c.w}</td>${s.profiles.map((p, k) => `<td><input class="inp n" style="width:60px" type="number" inputmode="decimal" data-num="1" data-bind="scoring.profiles.${k}.w.${i}" data-fid="pfw-${k}-${i}" value="${p.w[i] == null ? 0 : p.w[i]}"></td>`).join("")}</tr>`);
+    const res = [R].concat(s.profiles.map(p => C.scoring(P, P.criteria.map((c, i) => p.w[i] || 0))));
+    h += `<tr class="sum first"><td class="crit">Winner</td>${res.map(rr => { const w = rr.rows.slice().sort((a, b) => b.total - a.total)[0]; return `<td><b style="color:${colorOf(w.id)}">${esc(w.id)}</b> <span class="small">${C.f2(w.total)}</span></td>`; }).join("")}</tr></tbody></table></div>`;
+  }
+  return h + `</div>`;
+}
+
+/* ---------------- FUNNEL ---------------- */
+function funnelData() {
+  const cnt = C.counts(P), built = P.concepts.filter(c => !c.ref);
+  const keep = keepIds(), placed = P.concepts.some(c => c.pos);
+  const sr = C.screening(P) || [], cont = sr.filter(r => P.screening.cont[r.id]).map(r => r.id);
+  const R = C.scoring(P), dev = R ? R.rows.filter(r => P.scoring.cont[r.id] === "Develop").map(r => r.id) : [];
+  const top = R && R.rows.length ? R.rows.slice().sort((a, b) => b.total - a.total)[0].id : null;
+  return [
+    { k: "Possible combinations", n: cnt.practical || null, ids: [], c: "#E03131" },
+    { k: "Concepts built", n: built.length, ids: built.map(c => c.id), c: "#E03131" },
+    { k: "C-box keep box", n: placed ? keep.length : null, ids: keep, c: "#C98A10" },
+    { k: "Continue after screening", n: sr.length ? cont.length : null, ids: cont, c: "#9C36B5" },
+    { k: "Scored", n: R ? R.rows.length : null, ids: R ? R.rows.map(r => r.id) : [], c: "#3B5BDB" },
+    { k: "Develop", n: dev.length || (top ? 1 : null), ids: dev.length ? dev : top ? [top] : [], c: "#2F9E44" }
+  ];
+}
+function funnelSvg() {
+  const st = funnelData(), W = 900, rowH = 62, H = st.length * rowH + 10;
+  const vals = st.map(s => s.n || 0), mx = Math.max(1, ...vals);
+  const wOf = n => n ? 120 + 440 * Math.log(1 + n) / Math.log(1 + mx) : 60;
+  let s = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" font-family="Inter" width="100%">`;
+  st.forEach((x, i) => {
+    const w = wOf(x.n), y = 6 + i * rowH, cx = 300;
+    s += `<rect x="${cx - w / 2}" y="${y}" width="${w}" height="${rowH - 12}" rx="10" fill="${x.c}" opacity="${x.n == null ? .15 : .9}"/>`;
+    s += `<text x="${cx - w / 2 + 14}" y="${y + 32}" font-size="22" font-weight="700" fill="#fff" font-family="Fraunces">${x.n == null ? "–" : x.n.toLocaleString()}</text>`;
+    s += `<text x="600" y="${y + 20}" font-size="15" font-weight="700" fill="#1d1b18">${esc(x.k)}</text>`;
+    s += `<text x="600" y="${y + 40}" font-size="13" fill="#6b665d">${esc(x.ids.slice(0, 10).join(", "))}${x.ids.length > 10 ? "…" : ""}</text>`;
+  });
+  return s + `</svg>`;
+}
+function vFunnel() {
+  let h = head("Wrap up", "Your concept <em>funnel</em>", expBtns("funnel"));
+  h += how("Read your funnel", [
+    "Generate wide (matrix), then narrow in stages: C-box → datum method → weighted matrix.",
+    "The funnel widens again whenever you combine features into new concepts.",
+    "Download the <b>full report</b> to submit all your tables in one PDF."
+  ]);
+  h += `<div class="card">${funnelSvg()}</div>`;
+  h += `<div class="grid ${isM() ? "" : "g2"}" style="margin-top:14px"><div class="card"><h3>Full report</h3><p class="mut small" style="margin-top:0">One PDF with every method you have used: matrix, C-box, weights, datum method, pairwise, weighted matrix and this funnel. Your name is printed on every page.</p><button class="btn pri" data-act="report">⬇ Download full report (PDF)</button></div>
+    <div class="card"><h3>Reflect on the process</h3><textarea class="inp" style="width:100%;min-height:110px" data-bind="reflection" data-fid="refl" placeholder="What went well? What would you do differently? Which features did you combine?">${esc(P.reflection || "")}</textarea><p class="small mut">Included at the end of your report.</p></div></div>`;
+  return h;
+}
+
+const VIEWS = { home: vHome, morph: vMorph, cbox: vCbox, weights: vWeights, datum: vDatum, pair: vPair, score: vScore, funnel: vFunnel };
+
+/* ---------------- actions ---------------- */
+function removeConcept(id) {
+  P.concepts = P.concepts.filter(c => c.id !== id);
+  ["screening", "pairwise", "scoring"].forEach(k => { P[k].include = P[k].include.filter(x => x !== id); });
+  if (P.screening.datum === id) P.screening.datum = (P.concepts[0] || {}).id || null;
+  if (P.scoring.ref === id) P.scoring.ref = null;
+  if (UI.active === id) UI.active = null;
+}
+function renameConcept(oldId, nid) {
+  nid = cleanId(nid);
+  if (!nid || nid === oldId) return false;
+  if (cById(nid)) { toast("That code is already used"); return false; }
+  const c = cById(oldId); c.id = nid;
+  const ren = o => { if (o && o[oldId] !== undefined) { o[nid] = o[oldId]; delete o[oldId]; } };
+  ["screening", "pairwise", "scoring"].forEach(k => { P[k].include = P[k].include.map(x => x === oldId ? nid : x); });
+  ren(P.screening.r); ren(P.screening.cont); ren(P.scoring.r); ren(P.scoring.cont);
+  if (P.screening.datum === oldId) P.screening.datum = nid;
+  if (P.scoring.ref === oldId) P.scoring.ref = nid;
+  Object.values(P.pairwise.t).forEach(t => Object.keys(t).forEach(k => { const [a, b] = k.split("|"); if (a === oldId || b === oldId) { t[(a === oldId ? nid : a) + "|" + (b === oldId ? nid : b)] = t[k]; delete t[k]; } }));
+  if (UI.active === oldId) UI.active = nid;
+  return true;
+}
+function removeCriterion(i) {
+  P.criteria.splice(i, 1);
+  Object.values(P.screening.r).forEach(a => Array.isArray(a) && a.splice(i, 1));
+  Object.values(P.scoring.r).forEach(a => Array.isArray(a) && a.splice(i, 1));
+  P.scoring.profiles.forEach(p => p.w.splice(i, 1));
+  P.weighting.tree.local.splice(i, 1);
+  const nm = {}; Object.entries(P.weighting.matrix).forEach(([k, v]) => { let [a, b] = k.split("|").map(Number); if (a === i || b === i) return; if (a > i) a--; if (b > i) b--; nm[a + "|" + b] = v; }); P.weighting.matrix = nm;
+  const p = P.pairwise, keep = []; const nt = {};
+  p.crit.forEach((c, k) => { if (c === i) return; keep.push([c > i ? c - 1 : c, p.weights[k]]); });
+  Object.entries(p.t).forEach(([k, v]) => { const c = Number(k); if (c === i) return; nt[String(c > i ? c - 1 : c)] = v; });
+  p.crit = keep.map(x => x[0]); p.weights = keep.map(x => x[1]); p.t = nt;
+}
+function setPair(a, b, v) {
+  const p = P.pairwise, ci = p.crit[UI.pwCrit]; const t = p.t[String(ci)] = p.t[String(ci)] || {};
+  delete t[a + "|" + b]; delete t[b + "|" + a];
+  if (v !== "" && v != null) t[a + "|" + b] = Number(v);
+}
+function toggle(arr, id) { const i = arr.indexOf(id); if (i >= 0) arr.splice(i, 1); else arr.push(id); }
+function openModal(html) { $("#layer").innerHTML = `<div class="modal" data-act="closemodal"><div class="box">${html}</div></div>`; }
+function closeModal() { $("#layer").innerHTML = ""; }
+
+const ACT = {
+  tab: el => { UI.tab = el.dataset.id; UI.menu = false; save(); render(); window.scrollTo({ top: 0 }); },
+  loadex: el => { const ex = EXAMPLES.find(e => e.id === el.dataset.id); P = fromExample(ex); UI.exId = ex.id; UI.active = null; UI.mode = "edit"; UI.pwCrit = 0; UI.sel = {}; save(); toast(`Loaded: ${ex.name}`); UI.tab = firstTabFor(ex); render(); window.scrollTo({ top: 0 }); },
+  blank: () => { P = blank(); UI.exId = null; UI.tab = "morph"; UI.active = null; save(); render(); },
+  mode: el => { UI.mode = el.dataset.id; if (UI.mode === "build" && !UI.active && P.concepts.length) UI.active = P.concepts.find(c => !c.ref) ? P.concepts.find(c => !c.ref).id : P.concepts[0].id; render(); },
+  addsf: () => { P.subfunctions.push({ name: "New sub-function", ideas: [{ t: "" }, { t: "" }] }); save(); render(); },
+  delsf: el => { const i = +el.dataset.i; P.subfunctions.splice(i, 1); P.concepts.forEach(c => c.picks.splice(i, 1)); save(); render(); },
+  addidea: el => { P.subfunctions[+el.dataset.si].ideas.push({ t: "" }); lastFid = `idea-${el.dataset.si}-${P.subfunctions[+el.dataset.si].ideas.length - 1}`; save(); render(); const f = document.querySelector(`[data-fid="${lastFid}"]`); if (f) f.focus(); },
+  delidea: el => { const si = +el.dataset.si, ii = +el.dataset.ii; P.subfunctions[si].ideas.splice(ii, 1); P.concepts.forEach(c => { if (c.picks[si] === ii) c.picks[si] = -1; else if (c.picks[si] > ii) c.picks[si]--; }); save(); render(); },
+  ruleout: el => { const idea = P.subfunctions[+el.dataset.si].ideas[+el.dataset.ii]; idea.x = !idea.x; if (idea.x) P.concepts.forEach(c => { if (c.picks[+el.dataset.si] === +el.dataset.ii) toast(`${c.id} uses a ruled-out idea`); }); save(); render(); },
+  addc: () => { const id = uniqueId("C" + (P.concepts.length + 1)); P.concepts.push({ id, name: "New concept", picks: P.subfunctions.map(() => -1), note: "", ref: false, pos: null }); P.screening.include.push(id); P.scoring.include.push(id); UI.active = id; if (P.subfunctions.length) UI.mode = "build"; save(); render(); },
+  randc: () => { const picks = P.subfunctions.map(s => { const ok = s.ideas.map((x, i) => x.x ? -1 : i).filter(i => i >= 0); return ok.length ? ok[Math.floor(Math.random() * ok.length)] : -1; }); const id = uniqueId("C" + (P.concepts.length + 1)); P.concepts.push({ id, name: "Random combo", picks, note: "", ref: false, pos: null }); P.screening.include.push(id); P.scoring.include.push(id); UI.active = id; UI.mode = "build"; save(); render(); toast("Is this combination practical? Rename it or delete it."); },
+  buildc: el => { UI.active = el.dataset.id; UI.mode = "build"; render(); },
+  delc: el => { const id = el.dataset.id; openModal(`<h3>Delete ${esc(id)}?</h3><p class="mut">It will also be removed from every table.</p><div class="row" style="justify-content:flex-end"><button class="btn" data-act="closemodal">Cancel</button><button class="btn acc" data-act="delcok" data-id="${esc(id)}">Delete</button></div>`); },
+  delcok: el => { removeConcept(el.dataset.id); closeModal(); save(); render(); },
+  closemodal: (el, e) => { if (e.target === el || el.tagName === "BUTTON") closeModal(); },
+  pick: el => { const c = UI.active && cById(UI.active); if (!c) { toast("Create or choose a concept first"); return; } const si = +el.dataset.si, ii = +el.dataset.ii; c.picks[si] = c.picks[si] === ii ? -1 : ii; save(); render(); },
+  place: el => { const c = cById(el.dataset.id); const k = P.cbox.keep; c.pos = { x: .2 + Math.random() * .6, y: .2 + Math.random() * .6 }; save(); render(); },
+  unplace: el => { cById(el.dataset.id).pos = null; save(); render(); },
+  cb2datum: () => { const k = keepIds().filter(id => id !== P.screening.datum); P.screening.include = k; save(); UI.tab = "datum"; render(); toast(`${k.length} concept(s) sent to the datum method`); },
+  addcrit: () => { P.criteria.push({ name: "New criterion", w: 0 }); P.weighting.tree.local.push({ g: 0, w: 50 }); P.scoring.profiles.forEach(p => p.w.push(0)); save(); render(); },
+  delcrit: el => { removeCriterion(+el.dataset.i); save(); render(); },
+  normw: () => { const t = sum(P.criteria.map(c => c.w)); P.criteria.forEach(c => c.w = C.round((Number(c.w) || 0) / t * 100, 1)); save(); render(); },
+  wmeth: el => { P.weighting.method = el.dataset.id; save(); render(); },
+  wm: el => { P.weighting.matrix[el.dataset.k] = Number(el.dataset.v); save(); render(); },
+  usewm: () => { const R = C.matrixWeights(P.criteria.length, P.weighting.matrix); P.criteria.forEach((c, i) => c.w = C.round(R.w[i], 1)); save(); render(); toast("Weights updated from the matrix method"); },
+  addgrp: () => { P.weighting.tree.groups.push({ name: "New group", w: 0 }); save(); render(); },
+  delgrp: el => { const i = +el.dataset.i, T = P.weighting.tree; if (T.groups.length < 2) return; T.groups.splice(i, 1); T.local.forEach(l => { if (l.g === i) l.g = 0; else if (l.g > i) l.g--; }); save(); render(); },
+  usetree: () => { const g = C.treeWeights(P.weighting.tree); P.criteria.forEach((c, i) => c.w = C.round(g[i], 1)); save(); render(); toast("Weights updated from the objectives tree"); },
+  dscale: el => { const v = +el.dataset.v; const s = P.screening; if (v === 3) Object.values(s.r).forEach(a => a.forEach((x, i) => { if (x > 1) a[i] = 1; if (x < -1) a[i] = -1; })); s.scale = v; save(); render(); },
+  dinc: el => { toggle(P.screening.include, el.dataset.id); save(); render(); },
+  dsel: el => { UI.sel.datum = el.dataset.id; render(); },
+  dset: el => { const s = P.screening, id = el.dataset.id; s.r[id] = s.r[id] || []; const v = +el.dataset.v; s.r[id][+el.dataset.i] = s.r[id][+el.dataset.i] === v ? null : v; save(); render(); },
+  dcont: el => { const s = P.screening; s.cont[el.dataset.id] = !s.cont[el.dataset.id]; save(); render(); },
+  d2score: () => { const s = P.screening; const ids = s.include.filter(id => s.cont[id]); if (!ids.length) { toast("Mark at least one concept “Yes”"); return; } P.scoring.include = [s.datum].concat(ids).filter((v, i, a) => v && a.indexOf(v) === i); P.scoring.ref = s.datum; save(); UI.tab = "score"; render(); toast("Sent to the weighted matrix (datum kept as reference)"); },
+  d2pair: () => { const s = P.screening; const ids = s.include.filter(id => s.cont[id]); P.pairwise.include = ids.length >= 2 ? ids : s.include.slice(0, 4); save(); UI.tab = "pair"; render(); },
+  combine: () => { const a = $("#cmbA").value, b = $("#cmbB").value; if (!a || !b || a === b) { toast("Choose two different concepts"); return; } const A = cById(a); const id = uniqueId(a + b); const nm = $("#cmbN").value.trim() || `${cname(a)} + ${cname(b)}`; P.concepts.push({ id, name: nm, picks: (A.picks || []).slice(), note: `Combined from ${a} and ${b}`, ref: false, pos: null }); P.screening.include.push(id); P.scoring.include.push(id); save(); render(); toast(`Created ${id}. Rate it in the tables.`); },
+  pinc: el => { toggle(P.pairwise.include, el.dataset.id); save(); render(); },
+  pcrit: el => { const i = +el.dataset.i, p = P.pairwise, k = p.crit.indexOf(i); if (k >= 0) { p.crit.splice(k, 1); p.weights.splice(k, 1); } else { p.crit.push(i); p.weights.push(Number(P.criteria[i].w) || 10); } save(); render(); },
+  pctab: el => { UI.pwCrit = +el.dataset.i; render(); },
+  pset: el => { const p = P.pairwise, ci = p.crit[UI.pwCrit], t = p.t[String(ci)] || {}; const cur = t[el.dataset.a + "|" + el.dataset.b]; setPair(el.dataset.a, el.dataset.b, cur === Number(el.dataset.v) ? "" : el.dataset.v); save(); render(); },
+  sscale: el => { const s = P.scoring; const nv = el.dataset.v; const mx = Math.max(...SCALES[nv]), mn = Math.min(...SCALES[nv]); Object.values(s.r).forEach(a => a.forEach((x, i) => { if (x != null && x !== "") a[i] = Math.min(mx, Math.max(mn, Number(x))); })); s.scale = nv; save(); render(); },
+  sinc: el => { toggle(P.scoring.include, el.dataset.id); save(); render(); },
+  ssel: el => { UI.sel.score = el.dataset.id; render(); },
+  sset: el => { const s = P.scoring, id = el.dataset.id; s.r[id] = s.r[id] || []; const v = +el.dataset.v, i = +el.dataset.i; s.r[id][i] = s.r[id][i] === v ? null : v; save(); render(); },
+  addprof: () => { P.scoring.profiles.push({ name: "Group " + (P.scoring.profiles.length + 1), w: P.criteria.map(c => c.w) }); save(); render(); },
+  delprof: el => { P.scoring.profiles.splice(+el.dataset.i, 1); save(); render(); },
+  png: el => exportOne(el.dataset.k, "png"),
+  pdf: el => exportOne(el.dataset.k, "pdf"),
+  report: () => exportReport(),
+  noop: () => {}
+};
+const CHG = {
+  wm: el => { const k = el.dataset.k; if (el.value === "") delete P.weighting.matrix[k]; else P.weighting.matrix[k] = Number(el.value); },
+  dsetsel: el => { const s = P.screening, id = el.dataset.id; s.r[id] = s.r[id] || []; s.r[id][+el.dataset.i] = el.value === "" ? null : Number(el.value); },
+  psetsel: el => setPair(el.dataset.a, el.dataset.b, el.value),
+  ssetsel: el => { const s = P.scoring, id = el.dataset.id; s.r[id] = s.r[id] || []; s.r[id][+el.dataset.i] = el.value === "" ? null : Number(el.value); },
+  work: el => { UI.showWork = el.checked; }
+};
+function firstTabFor(ex) { if (ex.subfunctions.length) return "morph"; if (ex.screening) return "datum"; return "score"; }
+
+document.addEventListener("click", e => {
+  const el = e.target.closest("[data-act]");
+  if (UI.menu && !e.target.closest(".menu") && !e.target.closest("#bMore")) { UI.menu = false; $("#menu") && $("#menu").remove(); }
+  if (!el || !ACT[el.dataset.act]) return;
+  ACT[el.dataset.act](el, e);
+});
+document.addEventListener("change", e => {
+  const el = e.target;
+  if (el.dataset.actChange && CHG[el.dataset.actChange]) { CHG[el.dataset.actChange](el); save(); render(); return; }
+  if (el.dataset.bind) { applyBind(el); save(); if (el.dataset.idEdit) return; rerenderSoon(); }
+});
+document.addEventListener("input", e => {
+  const el = e.target;
+  if (el.dataset.bind && el.tagName !== "SELECT" && el.type !== "checkbox") { applyBind(el, true); save(); }
+});
+document.addEventListener("keydown", e => { if (e.key === "Enter" && e.target.tagName === "INPUT" && e.target.dataset.bind) e.target.blur(); });
+function applyBind(el, live) {
+  const path = el.dataset.bind;
+  if (path === "student") { UI.student = el.value; document.querySelectorAll('[data-bind="student"]').forEach(x => { if (x !== el) x.value = el.value; }); return; }
+  if (el.dataset.idEdit) {
+    if (live) return;
+    const i = Number(path.split(".")[1]); const old = P.concepts[i].id;
+    if (renameConcept(old, el.value)) { save(); } else { el.value = P.concepts[i].id; }
+    rerenderSoon(); return;
+  }
+  let v = el.type === "checkbox" ? el.checked : el.value;
+  if (el.dataset.num) v = v === "" ? 0 : Number(v);
+  setPath(P, path, v);
+}
+
+/* top bar */
+$("#projname").addEventListener("input", e => { P.name = e.target.value || "My project"; save(); });
+$("#bLoadEx").onclick = () => { UI.tab = "home"; render(); setTimeout(() => { const x = document.querySelector(".excards"); if (x) x.scrollIntoView({ behavior: "smooth" }); }, 50); };
+$("#bSave").onclick = () => saveFile(fname("project") + ".json", new Blob([JSON.stringify({ app: "conceptlab-l19", version: 1, student: UI.student, project: P }, null, 1)], { type: "application/json" }));
+$("#fOpen").onchange = e => { const f = e.target.files[0]; if (!f) return; const rd = new FileReader(); rd.onload = () => { try { const d = JSON.parse(rd.result); P = normalize(d.project || d); if (d.student && !UI.student) UI.student = d.student; UI.exId = null; save(); render(); toast("Project opened"); } catch (err) { toast("That file is not a Concept Lab project"); } }; rd.readAsText(f); e.target.value = ""; };
+$("#bReport").onclick = () => exportReport();
+(function addMore() {
+  const top = document.querySelector(".top");
+  ["#bLoadEx", "#bSave", "#bReport"].forEach(s => $(s).classList.add("topacts"));
+  $("#fOpen").parentElement.classList.add("topacts");
+  const b = document.createElement("button"); b.className = "btn sm moremenu"; b.id = "bMore"; b.textContent = "⋯ Menu"; b.style.display = "none";
+  top.appendChild(b);
+  b.onclick = e => {
+    e.stopPropagation(); if ($("#menu")) { $("#menu").remove(); UI.menu = false; return; }
+    UI.menu = true; const m = document.createElement("div"); m.className = "menu"; m.id = "menu";
+    m.innerHTML = `<button data-m="ex">Examples</button><button data-m="save">Save project file</button><label>Open project file<input type="file" accept=".json,application/json" class="hidden" id="fOpen2"></label><button data-m="rep">Full report PDF</button>`;
+    top.appendChild(m);
+    m.querySelector('[data-m="ex"]').onclick = () => { m.remove(); $("#bLoadEx").onclick(); };
+    m.querySelector('[data-m="save"]').onclick = () => { m.remove(); $("#bSave").onclick(); };
+    m.querySelector('[data-m="rep"]').onclick = () => { m.remove(); exportReport(); };
+    m.querySelector("#fOpen2").onchange = ev => { $("#fOpen").onchange(ev); m.remove(); };
+  };
+})();
+
+/* ---------------- downloads ---------------- */
+let DL = null, dlTried = false;
+function getDL() {
+  if (DL || dlTried) return Promise.resolve(DL);
+  try {
+    if (window.claude && typeof window.claude.use === "function") {
+      return Promise.race([window.claude.use("downloads"), new Promise(r => setTimeout(() => r(null), 4000))]).then(d => { DL = d; dlTried = true; return d; }).catch(() => { dlTried = true; return null; });
+    }
+  } catch (e) {}
+  dlTried = true; return Promise.resolve(null);
+}
+setTimeout(getDL, 300);
+async function saveFile(name, blob) {
+  const d = await getDL();
+  if (d) {
+    try { await d.save({ filename: name, data: blob }); toast("Saved " + name); return; }
+    catch (e) { const c = e && e.code; if (c === "declined") { toast("Download cancelled"); return; } if (c === "rate_limited") { toast("Please wait a moment and try again"); return; } }
+  }
+  try {
+    const url = URL.createObjectURL(blob); const a = document.createElement("a"); a.href = url; a.download = name; document.body.appendChild(a); a.click();
+    setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 2000); toast("Downloading " + name);
+  } catch (e) { toast("Download is not available here"); }
+}
+const fname = k => (P.name || "project").replace(/[^\w\- ]+/g, "").trim().replace(/\s+/g, "-").slice(0, 40) + "_" + k;
+
+/* ---------------- canvas sheets ---------------- */
+const INK = "#1d1b18", MUT = "#6b665d", RULE = "#E4DDCF", SOFT = "#F3EEE3";
+class Sheet {
+  constructor(kick, title, color) {
+    this.W = 1600; this.M = 70; this.c = document.createElement("canvas"); this.c.width = this.W; this.c.height = 7000;
+    this.x = this.c.getContext("2d"); this.x.fillStyle = "#FBF8F1"; this.x.fillRect(0, 0, this.W, 7000);
+    this.y = 56; this.color = color || "#D9480F";
+    const x = this.x;
+    x.fillStyle = this.color; x.fillRect(0, 0, this.W, 10);
+    this.font(15, 700); x.fillStyle = this.color; x.fillText(("CONCEPT LAB · LECTURE 19 · " + kick).toUpperCase(), this.M, this.y); this.y += 58;
+    x.font = `600 46px Fraunces, Georgia, serif`; x.fillStyle = INK; x.fillText(title, this.M, this.y); this.y += 34;
+    this.font(18, 500); x.fillStyle = MUT;
+    x.fillText([P.name, UI.student ? "Student: " + UI.student : null, new Date().toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" })].filter(Boolean).join("   ·   "), this.M, this.y);
+    this.y += 22; x.fillStyle = RULE; x.fillRect(this.M, this.y, this.W - 2 * this.M, 2); this.y += 30;
+  }
+  font(sz, w = 400, fam = "Inter, Arial, sans-serif") { this.x.font = `${w} ${sz}px ${fam}`; }
+  wrap(t, maxW) {
+    const words = String(t == null ? "" : t).split(/\s+/); const lines = []; let cur = "";
+    words.forEach(w => { const test = cur ? cur + " " + w : w; if (this.x.measureText(test).width > maxW && cur) { lines.push(cur); cur = w; } else cur = test; });
+    lines.push(cur);
+    return lines.flatMap(l => { if (this.x.measureText(l).width <= maxW) return [l]; let o = [], s = ""; for (const ch of l) { if (this.x.measureText(s + ch).width > maxW) { o.push(s); s = ch; } else s += ch; } o.push(s); return o; });
+  }
+  text(t, o = {}) {
+    const sz = o.sz || 21, lh = o.lh || sz * 1.4; this.font(sz, o.w || 400, o.fam); this.x.fillStyle = o.col || INK;
+    const lines = this.wrap(t, o.maxW || this.W - 2 * this.M);
+    lines.forEach(l => { this.y += lh * .78; this.x.fillText(l, o.x || this.M, this.y); this.y += lh * .22; });
+    this.y += o.after == null ? 10 : o.after;
+  }
+  label(t) { this.text(t.toUpperCase(), { sz: 15, w: 700, col: this.color, after: 6 }); }
+  gap(n) { this.y += n; }
+  rrect(x, y, w, h, r, fill, stroke) { const c = this.x; c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath(); if (fill) { c.fillStyle = fill; c.fill(); } if (stroke) { c.strokeStyle = stroke; c.lineWidth = 1.5; c.stroke(); } }
+  /* cols: [{w, al}] ; head: [[cells]] rows of header ; rows: [[cell]] cell = string | {t,bg,col,b,al,span} */
+  table(head, rows, colsW, o = {}) {
+    const x0 = this.M, W = this.W - 2 * this.M, sz = o.sz || 18, pad = 10, lh = sz * 1.3;
+    const tw = colsW.reduce((a, b) => a + b, 0); const ws = colsW.map(w => w / tw * W);
+    const all = head.map(r => ({ r, h: true })).concat(rows.map(r => ({ r, h: false })));
+    const lay = all.map(({ r, h }) => {
+      let ci = 0; const cells = r.map(c => { const cc = typeof c === "object" && c !== null ? c : { t: c }; const span = cc.span || 1; const w = ws.slice(ci, ci + span).reduce((a, b) => a + b, 0); const x = x0 + ws.slice(0, ci).reduce((a, b) => a + b, 0); ci += span; this.font(h ? sz - 2 : sz, h || cc.b ? 700 : 400, cc.mono ? "JetBrains Mono, monospace" : undefined); const lines = this.wrap(cc.t, w - 2 * pad); return { ...cc, x, w, lines, h }; });
+      const hh = Math.max(...cells.map(c => c.lines.length)) * lh + 2 * pad; return { cells, hh, h };
+    });
+    const totH = lay.reduce((a, r) => a + r.hh, 0);
+    this.rrect(x0, this.y, W, totH, 12, "#fff", RULE);
+    this.x.save(); this.x.beginPath(); this.x.rect(x0, this.y, W, totH); this.x.clip();
+    lay.forEach(row => {
+      row.cells.forEach(c => {
+        const bg = c.bg || (row.h ? SOFT : null); if (bg) { this.x.fillStyle = bg; this.x.fillRect(c.x, this.y, c.w, row.hh); }
+        this.x.strokeStyle = "#EEE8DC"; this.x.lineWidth = 1; this.x.strokeRect(c.x + .5, this.y + .5, c.w, row.hh);
+        this.font(row.h ? sz - 2 : sz, row.h || c.b ? 700 : 400, c.mono ? "JetBrains Mono, monospace" : undefined); this.x.fillStyle = c.col || INK;
+        const al = c.al || (o.left && o.left.includes(row.cells.indexOf(c)) ? "l" : "c");
+        const ty = this.y + pad + (row.hh - 2 * pad - c.lines.length * lh) / 2;
+        c.lines.forEach((l, li) => { const yy = ty + li * lh + lh * .76; if (al === "l") { this.x.textAlign = "left"; this.x.fillText(l, c.x + pad, yy); } else { this.x.textAlign = "center"; this.x.fillText(l, c.x + c.w / 2, yy); } });
+        this.x.textAlign = "left";
+      });
+      this.y += row.hh;
+    });
+    this.x.restore();
+    this.y += 24;
+  }
+  async svg(svgStr, w) {
+    const img = new Image();
+    const vb = (svgStr.match(/viewBox="0 0 ([\d.]+) ([\d.]+)"/) || [0, 800, 600]);
+    svgStr = svgStr.replace(/ width="100%"/, "").replace("<svg ", `<svg width="${vb[1]}" height="${vb[2]}" `);
+    const blob = new Blob([svgStr], { type: "image/svg+xml" });
+    const url = URL.createObjectURL(blob);
+    await new Promise((res, rej) => { img.onload = res; img.onerror = rej; img.src = url; });
+    const W = w || this.W - 2 * this.M; const H = W * img.height / img.width;
+    this.x.drawImage(img, this.M, this.y, W, H); URL.revokeObjectURL(url); this.y += H + 20;
+  }
+  finish() {
+    this.y += 20; this.font(14, 500); this.x.fillStyle = MUT; this.x.fillText("Made with Concept Lab — Lecture 19 · Conceptual design: generating, evaluating and selecting concepts", this.M, this.y); this.y += 40;
+    const out = document.createElement("canvas"); out.width = this.W; out.height = Math.ceil(this.y);
+    out.getContext("2d").drawImage(this.c, 0, 0); this.c.width = 1; this.c.height = 1; return out;
+  }
+}
+const sCell = (v, scale) => v == null || v === "" ? { t: "·", col: "#b0a99c" } : { t: C.sym(v), bg: v > 0 ? "#E3F4E6" : v < 0 ? "#FBE4E1" : null, col: v > 0 ? "#1F7A35" : v < 0 ? "#B42318" : "#8a8478", b: v !== 0 };
+const pCell = v => v === undefined ? { t: "·", col: "#b0a99c" } : v === null ? { t: "–", bg: SOFT, col: "#b0a99c" } : { t: C.signed(v), bg: v > 0 ? "#E3F4E6" : v < 0 ? "#FBE4E1" : null, col: v > 0 ? "#1F7A35" : v < 0 ? "#B42318" : INK, b: true };
+
+const SHEETS = {
+  async morph() {
+    const s = new Sheet("Steps 1–3 · Generate", "Morphological matrix", "#3B5BDB");
+    if (P.overall) { s.label("Overall function"); s.text(P.overall, { sz: 24, w: 600 }); }
+    if (P.subfunctions.length) {
+      const max = Math.max(...P.subfunctions.map(x => x.ideas.length));
+      const head = [["Sub-function"].concat(Array.from({ length: max }, (_, i) => "Idea " + (i + 1)))];
+      const rows = P.subfunctions.map((sf, si) => [{ t: sf.name, b: true, bg: "#FBF8F1", al: "l" }].concat(Array.from({ length: max }, (_, ii) => {
+        const idea = sf.ideas[ii]; if (!idea) return { t: "", bg: "#F8F5EE" };
+        const ids = P.concepts.filter(c => c.picks[si] === ii).map(c => c.id);
+        return { t: (idea.x ? "[ruled out] " : "") + (idea.t || "") + (ids.length ? "   ● " + ids.join(", ") : ""), al: "l", col: idea.x ? "#a59f94" : INK, bg: ids.length ? "#EDF2FF" : null };
+      })));
+      s.table(head, rows, [1.4].concat(Array(max).fill(1)), { sz: 17 });
+      const cnt = C.counts(P);
+      s.text(`Theoretical concepts: ${cnt.factors.join(" × ")} = ${cnt.theoretical.toLocaleString()}` + (cnt.theoretical !== cnt.practical ? `   ·   after ruling out ideas: ${cnt.pfactors.join(" × ")} = ${cnt.practical.toLocaleString()}` : ""), { sz: 20, w: 700, fam: "JetBrains Mono, monospace" });
+    }
+    if (P.concepts.length) {
+      s.gap(6); s.label("Concepts");
+      const hasM = P.subfunctions.length > 0;
+      const head = [["Code", "Name"].concat(hasM ? P.subfunctions.map(x => x.name) : ["Note"])];
+      const rows = P.concepts.map(c => [{ t: c.id, b: true, col: colorOf(c.id) }, { t: c.name + (c.ref ? " (reference)" : ""), al: "l" }].concat(hasM ? P.subfunctions.map((sf, si) => { const p = c.picks[si]; return { t: p >= 0 && sf.ideas[p] ? sf.ideas[p].t : "—", al: "l" }; }) : [{ t: c.note || "", al: "l" }]));
+      s.table(head, rows, [0.5, 1.2].concat(hasM ? P.subfunctions.map(() => 1) : [2]), { sz: 16 });
+    }
+    return s.finish();
+  },
+  async cbox() {
+    const s = new Sheet("Filter", "C-box", "#C98A10");
+    s.text(`Axes: ${P.cbox.xName} (${P.cbox.xLo} → ${P.cbox.xHi})  ×  ${P.cbox.yName} (${P.cbox.yLo} → ${P.cbox.yHi})`, { sz: 19, col: MUT });
+    await s.svg(cboxSvg(true), 1100);
+    const k = keepIds();
+    s.label("Keep box"); s.text(k.length ? k.map(id => `${id} ${cname(id)}`).join("  ·  ") : "No concepts in the keep box", { sz: 20, w: 600 });
+    const un = P.concepts.filter(c => !c.pos); if (un.length) s.text("Not placed: " + un.map(c => c.id).join(", "), { sz: 17, col: MUT });
+    return s.finish();
+  },
+  async weights() {
+    const s = new Sheet("Prepare", "Criteria & weights", "#2F9E44");
+    const tot = sum(P.criteria.map(c => c.w));
+    s.table([["#", "Criterion", "Weight"]], P.criteria.map((c, i) => [String(i + 1), { t: c.name, al: "l", b: true }, { t: C.round(c.w, 1) + " %", mono: true }]).concat([[{ t: "Total", span: 2, b: true, bg: "#FFFBEA" }, { t: C.round(tot, 1) + " %", b: true, bg: "#FFFBEA" }]]), [0.4, 3, 1]);
+    const m = P.weighting.method, n = P.criteria.length;
+    if (m === "matrix" && n > 1) {
+      s.label("Matrix method — row more important than column? (1 yes · ½ equal · 0 no)");
+      const R = C.matrixWeights(n, P.weighting.matrix), M = P.weighting.matrix;
+      const head = [["Row vs column"].concat(P.criteria.map(c => short(c.name)), ["Wins", "+1", "Weight"])];
+      const rows = P.criteria.map((c, i) => [{ t: c.name, al: "l", b: true, bg: "#FBF8F1" }].concat(P.criteria.map((d, j) => { if (i === j) return { t: "–", bg: SOFT }; const v = j > i ? M[i + "|" + j] : (M[j + "|" + i] === undefined ? undefined : 1 - M[j + "|" + i]); return { t: v === undefined ? "·" : v === .5 ? "½" : String(v), bg: v === 1 ? "#E3F4E6" : null }; }), [{ t: String(R.wins[i]), bg: "#FFF3C9" }, { t: String(R.pts[i]), bg: "#FFF3C9" }, { t: C.round(R.w[i], 1) + " %", b: true, bg: "#FFF3C9" }]));
+      s.table(head, rows, [2].concat(P.criteria.map(() => 1), [0.8, 0.6, 1]), { sz: 16 });
+    }
+    if (m === "tree") {
+      s.label("Objectives tree — global weight = group × local");
+      const T = P.weighting.tree, g = C.treeWeights(T);
+      s.table([["Group", "Group weight", "Criterion", "Local weight", "Global weight"]], P.criteria.map((c, i) => { const l = T.local[i], gr = T.groups[l.g] || { name: "?", w: 0 }; return [{ t: gr.name, al: "l" }, gr.w + " %", { t: c.name, al: "l", b: true }, l.w + " %", { t: C.round(g[i], 1) + " %", b: true, bg: "#FFF3C9" }]; }), [1.3, 1, 2, 1, 1]);
+    }
+    return s.finish();
+  },
+  async datum() {
+    const s = new Sheet("Screen", "Datum method (Pugh)", "#0F8B8D"); const sc = P.screening; const rows = C.screening(P);
+    s.text(`Datum: ${sc.datum} · ${cname(sc.datum)}   ·   Scale: ${sc.scale === 5 ? "++ + 0 − −−" : "+ 0 −"}`, { sz: 19, col: MUT });
+    const head = [["Criteria", "Datum " + sc.datum].concat(rows.map(r => r.id + (cname(r.id) !== r.id ? " · " + cname(r.id) : "")))];
+    const body = P.criteria.map((c, i) => [{ t: c.name, al: "l", b: true, bg: "#FBF8F1" }, { t: "0", bg: "#EEF7F7", col: "#0F8B8D" }].concat(rows.map(r => sCell(r.r[i]))));
+    const sr = (lab, f, bg = "#FFFBEA") => [{ t: lab, al: "l", b: true, bg }, { t: "0", bg: "#EEF7F7", col: "#0F8B8D" }].concat(rows.map(r => ({ t: String(f(r)), bg, b: lab === "Net score" })));
+    body.push(sr("Plusses Σ+", r => r.plus)); if (sc.scale === 3) body.push(sr("Sames (0)", r => r.same)); body.push(sr("Minuses Σ−", r => r.minus)); body.push(sr("Net score", r => C.signed(r.net), "#FFF3C9")); body.push(sr("Rank", r => r.rank + (r.tie ? "=" : "")));
+    body.push([{ t: "Continue?", al: "l", b: true, bg: "#FFFBEA" }, { t: "", bg: "#EEF7F7" }].concat(rows.map(r => ({ t: sc.cont[r.id] ? "Yes" : "No", b: true, col: sc.cont[r.id] ? "#1F7A35" : "#B42318", bg: "#FFFBEA" }))));
+    s.table(head, body, [2, 0.9].concat(rows.map(() => 1)), { sz: rows.length > 6 ? 15 : 17 });
+    return s.finish();
+  },
+  async pair() {
+    const s = new Sheet("Screen", "Pairwise comparison", "#9C36B5"); const p = P.pairwise; const R = C.pairwise(P);
+    if (!R || p.include.length < 2) { s.text("Not enough concepts selected.", { col: MUT }); return s.finish(); }
+    p.crit.forEach((ci, k) => {
+      const pc = R.per[k];
+      s.label(`${P.criteria[ci].name} · weight ${C.f2(R.ws[k])}   (row vs column: +1 superior · 0 equal · −1 inferior)`);
+      s.table([["row vs col"].concat(pc.ids, ["Σ"])], pc.ids.map((a, i) => [{ t: a, b: true, bg: SOFT }].concat(pc.m[i].map((v, j) => i === j ? pCell(null) : pCell(v)), [{ t: C.signed(pc.sums[i]), b: true, bg: "#FFF3C9" }])), [1].concat(pc.ids.map(() => 1), [1]), { sz: 17 });
+    });
+    s.label("Weighted totals");
+    s.table([["Concept"].concat(p.crit.map((ci, k) => `${P.criteria[ci].name} (× ${C.f2(R.ws[k])})`), ["Weighted total", "Rank"])], p.include.map((id, i) => [{ t: id + " · " + cname(id), al: "l", b: true }].concat(R.per.map(x => C.signed(x.sums[i])), [{ t: C.f2(R.totals[i]), b: true, bg: "#FFF3C9" }, String(R.ranks[i])])), [2].concat(p.crit.map(() => 1.2), [1, 0.6]), { sz: 17 });
+    return s.finish();
+  },
+  async score() {
+    const s = new Sheet("Score", "Weighted evaluation matrix", "#D9480F"); const sc = P.scoring; const R = C.scoring(P);
+    s.text(`Scale: ${sc.scale}${sc.ref ? "   ·   Reference: " + sc.ref + " · " + cname(sc.ref) : ""}`, { sz: 19, col: MUT });
+    const head = [[{ t: "Criteria" }, { t: "Weight" }].concat(R.rows.map(r => ({ t: r.id + (r.id === sc.ref ? " (ref.)" : "") + (cname(r.id) !== r.id ? " · " + cname(r.id) : ""), span: 2 }))), [{ t: "" }, { t: "" }].concat(R.rows.flatMap(() => [{ t: "Rating" }, { t: "Weighted" }]))];
+    const body = P.criteria.map((c, i) => [{ t: c.name, al: "l", b: true, bg: "#FBF8F1" }, { t: c.w + "%", mono: true }].concat(R.rows.flatMap(r => [{ t: r.r[i] == null || r.r[i] === "" ? "·" : String(r.r[i]), bg: "#F2F8FF", b: true }, { t: r.ws[i] == null ? "" : C.f2(r.ws[i]), col: MUT }])));
+    body.push([{ t: "Total score", span: 2, b: true, bg: "#FFF3C9", al: "l" }].concat(R.rows.map(r => ({ t: C.f2(r.total), span: 2, b: true, bg: "#FFF3C9" }))));
+    body.push([{ t: "Rank", span: 2, b: true, bg: "#FFFBEA", al: "l" }].concat(R.rows.map(r => ({ t: String(r.rank), span: 2, bg: "#FFFBEA" }))));
+    body.push([{ t: "Continue?", span: 2, b: true, bg: "#FFFBEA", al: "l" }].concat(R.rows.map(r => ({ t: sc.cont[r.id] || "—", span: 2, bg: "#FFFBEA", b: true, col: sc.cont[r.id] === "Develop" ? "#1F7A35" : INK }))));
+    s.table(head, body, [2, 0.7].concat(R.rows.flatMap(() => [0.7, 0.8])), { sz: R.rows.length > 4 ? 15 : 17 });
+    if (sc.profiles.length) {
+      s.label("Stakeholder groups — same ratings, different weights");
+      const res = [R].concat(sc.profiles.map(p => C.scoring(P, P.criteria.map((c, i) => p.w[i] || 0))));
+      const names = ["Team"].concat(sc.profiles.map(p => p.name));
+      const body2 = P.criteria.map((c, i) => [{ t: c.name, al: "l", b: true }, c.w + " %"].concat(sc.profiles.map(p => (p.w[i] || 0) + " %")));
+      body2.push([{ t: "Winner", b: true, al: "l", bg: "#FFF3C9" }].concat(res.map(rr => { const w = rr.rows.slice().sort((a, b) => b.total - a.total)[0]; return { t: `${w.id} (${C.f2(w.total)})`, b: true, bg: "#FFF3C9" }; })));
+      s.table([["Criterion"].concat(names)], body2, [2].concat(names.map(() => 1)), { sz: 17 });
+    }
+    return s.finish();
+  },
+  async funnel() {
+    const s = new Sheet("Wrap up", "Concept funnel", "#1d1b18");
+    await s.svg(funnelSvg(), 1300);
+    if (P.reflection) { s.label("Reflection on the process"); s.text(P.reflection, { sz: 20 }); }
+    return s.finish();
+  }
+};
+async function fontsReady() { try { await Promise.all(["600 46px Fraunces", "400 20px Inter", "700 20px Inter", "500 20px 'JetBrains Mono'"].map(f => document.fonts.load(f))); } catch (e) {} }
+function busy(on, msg) { let b = $("#busy"); if (on) { if (!b) { b = document.createElement("div"); b.id = "busy"; b.className = "toast"; document.body.appendChild(b); } b.textContent = msg || "Preparing…"; } else if (b) b.remove(); }
+async function exportOne(kind, fmt) {
+  busy(true, "Preparing your " + (fmt === "png" ? "image" : "PDF") + "…");
+  try {
+    await fontsReady(); const cv = await SHEETS[kind]();
+    const blob = fmt === "png" ? await new Promise(r => cv.toBlob(r, "image/png")) : makePdf([cv]);
+    busy(false); await saveFile(fname(kind) + "." + fmt, blob);
+  } catch (e) { busy(false); console.error(e); toast("Sorry — could not create the file"); }
+}
+async function exportReport() {
+  busy(true, "Building your full report…");
+  try {
+    await fontsReady();
+    const kinds = [];
+    if (P.subfunctions.length || P.concepts.length) kinds.push("morph");
+    if (P.concepts.some(c => c.pos)) kinds.push("cbox");
+    if (P.criteria.length) kinds.push("weights");
+    if (P.screening.include.length && P.criteria.length) kinds.push("datum");
+    if (P.pairwise.include.length > 1 && P.pairwise.crit.length) kinds.push("pair");
+    if (P.scoring.include.length && P.criteria.length) kinds.push("score");
+    kinds.push("funnel");
+    const pages = [coverSheet(kinds)];
+    for (const k of kinds) pages.push(await SHEETS[k]());
+    const blob = makePdf(pages); busy(false); await saveFile(fname("report") + ".pdf", blob);
+  } catch (e) { busy(false); console.error(e); toast("Sorry — could not create the report"); }
+}
+function coverSheet(kinds) {
+  const c = document.createElement("canvas"); c.width = 1600; c.height = 1000; const x = c.getContext("2d");
+  x.fillStyle = "#1d1b18"; x.fillRect(0, 0, 1600, 1000);
+  x.fillStyle = "#FFB37A"; x.font = "700 18px Inter, Arial"; x.fillText("CONCEPT LAB · LECTURE 19 · CONCEPTUAL DESIGN", 90, 120);
+  x.fillStyle = "#FBF8F1"; x.font = "600 84px Fraunces, Georgia, serif"; x.fillText(P.name.slice(0, 30), 90, 260);
+  x.font = "italic 500 40px Fraunces, Georgia, serif"; x.fillStyle = "#FFB37A"; x.fillText("Concept generation, evaluation & selection", 90, 330);
+  x.font = "500 26px Inter, Arial"; x.fillStyle = "#D8D0C1";
+  let y = 420; if (P.overall) { x.fillText("Overall function: " + P.overall.slice(0, 80), 90, y); y += 46; }
+  if (UI.student) { x.fillText("Student: " + UI.student, 90, y); y += 46; }
+  x.fillText("Date: " + new Date().toLocaleDateString(undefined, { day: "numeric", month: "long", year: "numeric" }), 90, y); y += 80;
+  const L = { morph: "Morphological matrix", cbox: "C-box", weights: "Criteria & weights", datum: "Datum method", pair: "Pairwise comparison", score: "Weighted evaluation matrix", funnel: "Concept funnel" };
+  x.font = "700 18px Inter, Arial"; x.fillStyle = "#A9A193"; x.fillText("CONTENTS", 90, y); y += 44;
+  x.font = "500 28px Inter, Arial"; x.fillStyle = "#FBF8F1"; kinds.forEach((k, i) => { x.fillText(`${i + 1}.  ${L[k]}`, 110, y); y += 44; });
+  return c;
+}
+function makePdf(canvases) {
+  const enc = new TextEncoder(); const parts = []; let len = 0; const offs = [];
+  const push = s => { const b = typeof s === "string" ? enc.encode(s) : s; parts.push(b); len += b.length; };
+  const imgs = canvases.map(c => { const d = atob(c.toDataURL("image/jpeg", 0.92).split(",")[1]); const u = new Uint8Array(d.length); for (let i = 0; i < d.length; i++) u[i] = d.charCodeAt(i); return { u, w: c.width, h: c.height }; });
+  const n = imgs.length, total = 3 + n * 3;
+  push("%PDF-1.4\n");
+  const obj = (id, fn) => { offs[id] = len; push(id + " 0 obj\n"); fn(); push("\nendobj\n"); };
+  obj(1, () => push("<< /Type /Catalog /Pages 2 0 R >>"));
+  obj(2, () => push(`<< /Type /Pages /Kids [${imgs.map((_, i) => (3 + i * 3) + " 0 R").join(" ")}] /Count ${n} >>`));
+  imgs.forEach((im, i) => {
+    const pid = 3 + i * 3, cid = pid + 1, iid = pid + 2, pw = 842, ph = Math.round(im.h * 842 / im.w * 100) / 100;
+    obj(pid, () => push(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pw} ${ph}] /Resources << /XObject << /Im${i} ${iid} 0 R >> >> /Contents ${cid} 0 R >>`));
+    const cs = `q ${pw} 0 0 ${ph} 0 0 cm /Im${i} Do Q`;
+    obj(cid, () => push(`<< /Length ${cs.length} >>\nstream\n${cs}\nendstream`));
+    obj(iid, () => { push(`<< /Type /XObject /Subtype /Image /Width ${im.w} /Height ${im.h} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${im.u.length} >>\nstream\n`); push(im.u); push("\nendstream"); });
+  });
+  const xref = len;
+  push(`xref\n0 ${total}\n0000000000 65535 f \n`);
+  for (let id = 1; id < total; id++) push(String(offs[id]).padStart(10, "0") + " 00000 n \n");
+  push(`trailer\n<< /Size ${total} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`);
+  return new Blob(parts, { type: "application/pdf" });
+}
+
+/* ---------------- boot ---------------- */
+if (!load()) { P = fromExample(EXAMPLES.find(e => e.id === "tiffin")); UI.exId = "tiffin"; }
+mq.addEventListener ? mq.addEventListener("change", render) : mq.addListener(render);
+let rz; window.addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(() => { if (UI.tab === "morph") drawPaths(); }, 120); });
+window.__CL = { get P() { return P; }, UI, SHEETS, makePdf, render };
+render();
+})();
+</script>
+</body></html>
