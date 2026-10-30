@@ -261,7 +261,72 @@ select.cell:focus{outline:2px solid var(--c)}
    Ratings: screening uses numbers (-2..2) shown as --,-,0,+,++ ; pairwise stores row-vs-column for i<j. */
 window.L19_EXAMPLES = [
 {
+  id: "bottle",
+  group: "main",
+  name: "Water Bottle (worked example)",
+  tag: "Simple worked example — every method",
+  blurb: "A water bottle for college. One simple product taken through every method, step by step.",
+  overall: "Carry drinking water through the college day",
+  subfunctions: [
+    { name: "Hold water", ideas: [ { t: "Plastic body" }, { t: "Steel body" }, { t: "Glass body", x: true } ] },
+    { name: "Close the opening", ideas: [ { t: "Screw cap" }, { t: "Flip-top" }, { t: "Straw lid" } ] },
+    { name: "Carry it", ideas: [ { t: "Loop handle" }, { t: "Shoulder strap" } ] }
+  ],
+  concepts: [
+    { id: "R", name: "Ordinary plastic bottle", picks: [0,0,-1], ref: true, pos: { x: 0.86, y: 0.14 }, note: "What students use today — our datum / reference" },
+    { id: "A", name: "Steel Classic", picks: [1,0,0], pos: { x: 0.76, y: 0.30 } },
+    { id: "B", name: "Sport Sipper",  picks: [0,1,0], pos: { x: 0.62, y: 0.40 } },
+    { id: "C", name: "Straw Sling",   picks: [1,2,1], pos: { x: 0.70, y: 0.76 } },
+    { id: "D", name: "Flip Strap",    picks: [0,1,1], pos: { x: 0.30, y: 0.64 } },
+    { id: "E", name: "Steel Sipper (A+B)", picks: [1,1,0], note: "Combined: steel body of A + flip-top of B" }
+  ],
+  cbox: { xName: "Feasibility", xLo: "Difficult", xHi: "Easy", yName: "Creativity", yLo: "Not creative", yHi: "Very creative", keep: "TR" },
+  criteria: [ { name: "Leak-proof", w: 40 }, { name: "Keeps water cool", w: 30 }, { name: "Easy to drink", w: 20 }, { name: "Low cost", w: 10 } ],
+  weighting: {
+    method: "matrix",
+    matrix: { "0|1": 1, "0|2": 1, "0|3": 1, "1|2": 1, "1|3": 1, "2|3": 1 },
+    tree: { groups: [ { name: "Performance", w: 70 }, { name: "Use", w: 30 } ],
+            local: [ { g: 0, w: 60 }, { g: 0, w: 40 }, { g: 1, w: 70 }, { g: 1, w: 30 } ] }
+  },
+  screening: {
+    datum: "R", include: ["A","B","C","D"], scale: 3,
+    r: { A: [0,1,0,-1], B: [1,0,1,0], C: [-1,1,1,-1], D: [0,0,1,0] },
+    cont: { A: true, B: true, C: false, D: true }
+  },
+  pairwise: {
+    include: ["A","B","D"], crit: [0,1], weights: [60,40],
+    t: { "0": { "A|B": -1, "A|D": 0, "B|D": 1 }, "1": { "A|B": 1, "A|D": 1, "B|D": 0 } }
+  },
+  scoring: {
+    include: ["R","A","B","D","E"], ref: "R", scale: "1-5",
+    r: { R: [3,3,3,3], A: [3,5,3,2], B: [4,3,4,3], D: [3,3,4,4], E: [4,5,4,2] },
+    cont: { R: "No", A: "Combine", B: "Combine", D: "No", E: "Develop" },
+    profiles: [ { name: "Parent (buyer)", w: [30,20,10,40] } ]
+  }
+},
+{
+  id: "stand",
+  group: "practice",
+  name: "Phone Stand (practice)",
+  tag: "Practice — do it yourself",
+  blurb: "A desk stand for watching videos on your phone. Ideas and criteria are ready — you do every step.",
+  overall: "Hold a phone upright on a desk for watching videos",
+  subfunctions: [
+    { name: "Hold the phone", ideas: [ { t: "Slot" }, { t: "Spring clip" }, { t: "Front ledge" } ] },
+    { name: "Set the viewing angle", ideas: [ { t: "Fixed angle" }, { t: "Hinge" }, { t: "Adjustable leg" } ] },
+    { name: "Stay stable", ideas: [ { t: "Wide base" }, { t: "Weighted base" }, { t: "Rubber feet" } ] }
+  ],
+  concepts: [ { id: "R", name: "Phone leaned on a water bottle", picks: [-1,-1,-1], ref: true, note: "Today's 'solution' — use as datum" } ],
+  cbox: { xName: "Feasibility", xLo: "Difficult", xHi: "Easy", yName: "Creativity", yLo: "Not creative", yHi: "Very creative", keep: "TR" },
+  criteria: [ { name: "Stable", w: 25 }, { name: "Easy to change angle", w: 25 }, { name: "Portable", w: 25 }, { name: "Low cost", w: 25 } ],
+  weighting: { method: "matrix", matrix: {} },
+  screening: { datum: "R", include: [], scale: 3, r: {}, cont: {} },
+  pairwise: null,
+  scoring: { include: ["R"], ref: "R", scale: "1-5", r: {}, cont: {}, profiles: [] }
+},
+{
   id: "nailer",
+  group: "more",
   name: "Power Nailer",
   tag: "Lecture example",
   blurb: "Morphological matrix for a tool that drives nails using electricity.",
@@ -281,6 +346,7 @@ window.L19_EXAMPLES = [
 },
 {
   id: "power",
+  group: "more",
   name: "Personal Power Generation",
   tag: "Lecture example",
   blurb: "Generate power from human activity — morphological matrix, C-box and criteria weighting.",
@@ -316,6 +382,7 @@ window.L19_EXAMPLES = [
 },
 {
   id: "tiffin",
+  group: "more",
   name: "Tiffin Box (full worked case)",
   tag: "Worked case — every method",
   blurb: "A lunch box that keeps food hot until lunch. Runs through every method from matrix to final choice.",
@@ -358,6 +425,7 @@ window.L19_EXAMPLES = [
 },
 {
   id: "syringe",
+  group: "more",
   name: "Reusable Insulin Syringe",
   tag: "Lecture example",
   blurb: "Seven syringe concepts screened against an existing product, then scored with weights.",
@@ -399,6 +467,7 @@ window.L19_EXAMPLES = [
 },
 {
   id: "slides",
+  group: "more",
   name: "Lecture tables: S1–S4",
   tag: "Lecture example",
   blurb: "The datum-method and pairwise-comparison tables exactly as shown in the lecture.",
@@ -421,6 +490,7 @@ window.L19_EXAMPLES = [
 },
 {
   id: "pencil",
+  group: "more",
   name: "Mechanical Pencils (exercise)",
   tag: "Practice exercise",
   blurb: "Five mechanical pencils. Choose criteria, pick a datum, screen, then score.",
@@ -575,7 +645,7 @@ const SCALE_TXT = {
   "0-10": ["0 absolutely useless", "1 very inadequate", "2 weak", "3 tolerable", "4 adequate", "5 satisfactory", "6 good, few drawbacks", "7 good", "8 very good", "9 exceeds the requirement", "10 ideal"],
   "0-4": ["0 unsatisfactory", "1 just tolerable", "2 adequate", "3 good", "4 very good (ideal)"]
 };
-const KEY = "conceptlab-l19-v1";
+const KEY = "conceptlab-l19-v2";
 const mq = window.matchMedia("(max-width: 760px)");
 const isM = () => mq.matches;
 
@@ -695,10 +765,12 @@ function rerenderSoon() { clearTimeout(rTimer); rTimer = setTimeout(() => { rend
 /* ---------------- HOME ---------------- */
 function vHome() {
   const methods = TABS.slice(1).map(t => `<button class="mc" style="--c:${t.c}" data-act="tab" data-id="${t.id}"><b>${t.ic}. ${t.label}</b><span>${({ morph: "Sub-functions, ideas, combine into concepts", cbox: "Quick 2×2 filter of a big pool", weights: "Criteria + weights (direct, matrix, tree)", datum: "Screen against a benchmark with + 0 −", pair: "Head-to-head, criterion by criterion", score: "Ratings × weights = overall value", funnel: "See the whole funnel; download a report" })[t.id]}</span></button>`).join("");
-  const exs = EXAMPLES.map(e => {
+  const card = e => {
     const tags = [e.subfunctions.length && "Matrix", e.cbox && e.concepts.some(c => c.pos) && "C-box", e.weighting && e.weighting.method === "matrix" && "Weights", e.screening && "Datum", e.pairwise && "Pairwise", e.scoring && "Scoring"].filter(Boolean);
     return `<button class="ex ${UI.exId === e.id ? "cur" : ""}" data-act="loadex" data-id="${e.id}"><span class="tg">${esc(e.tag)}</span><h4>${esc(e.name)}</h4><span class="mut small">${esc(e.blurb)}</span><span class="mt">${tags.map(t => `<span>${t}</span>`).join("")}</span></button>`;
-  }).join("");
+  };
+  const exs = EXAMPLES.filter(e => e.group !== "more").map(card).join("");
+  const more = EXAMPLES.filter(e => e.group === "more").map(card).join("");
   return `
   <div class="hero">
     <div><h1>Practise <em>concept generation</em> &amp; <em>selection</em></h1>
@@ -710,9 +782,10 @@ function vHome() {
       <div class="row" style="margin-top:12px"><button class="btn acc" data-act="tab" data-id="morph">Continue: ${esc(P.name)} →</button><button class="btn" data-act="blank">New blank project</button></div>
     </div>
   </div>
-  <h2 style="font-family:Fraunces;font-size:26px;margin:28px 0 4px">Examples from the lecture</h2>
-  <p class="mut" style="margin:0 0 14px">Same examples and numbers as the lecture notes. Open one, change anything, and watch the results update.</p>
+  <h2 style="font-family:Fraunces;font-size:26px;margin:28px 0 4px">Start here</h2>
+  <p class="mut" style="margin:0 0 14px">The water bottle is the example from the lecture, with the same numbers. Then try the phone stand yourself.</p>
   <div class="excards">${exs}</div>
+  <details style="margin-top:16px"><summary style="cursor:pointer;font-weight:600">More examples (textbook cases)</summary><div class="excards" style="margin-top:12px">${more}</div></details>
   <h2 style="font-family:Fraunces;font-size:26px;margin:30px 0 12px">The methods, in order</h2>
   <div class="mcards">${methods}</div>
   <div class="note info" style="margin-top:22px"><b>Your work is kept in this browser</b> on this device. Use <b>Save project</b> to keep a file, and <b>Open project</b> to continue on another device.</div>`;
@@ -1624,7 +1697,7 @@ function makePdf(canvases) {
 }
 
 /* ---------------- boot ---------------- */
-if (!load()) { P = fromExample(EXAMPLES.find(e => e.id === "tiffin")); UI.exId = "tiffin"; }
+if (!load()) { P = fromExample(EXAMPLES.find(e => e.id === "bottle")); UI.exId = "bottle"; }
 mq.addEventListener ? mq.addEventListener("change", render) : mq.addListener(render);
 let rz; window.addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(() => { if (UI.tab === "morph") drawPaths(); }, 120); });
 window.__CL = { get P() { return P; }, UI, SHEETS, makePdf, render };
